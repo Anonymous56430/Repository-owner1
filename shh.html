@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة فروع الشركة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status.active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .description {
+            color: #5a6c7d;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .progress-container {
+            margin-bottom: 25px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+        }
+        
+        .progress-percent {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        .card-footer {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .branches .icon {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+        
+        .development .icon {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        .coordination .icon {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .branches .progress-fill {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            width: 83%;
+        }
+        
+        .development .progress-fill {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            width: 79%;
+        }
+        
+        .coordination .progress-fill {
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            width: 72%;
+        }
+        
+        /* أنماط جديدة للقائمة المنسدلة */
+        .branches-dropdown {
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+        
+        .branches-dropdown.active {
+            max-height: 300px;
+        }
+        
+        .dropdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .dropdown-header h3 {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .dropdown-header i {
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-header.active i {
+            transform: rotate(180deg);
+        }
+        
+        .branches-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .branch-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .branch-item:last-child {
+            border-bottom: none;
+        }
+        
+        .branch-item:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .branch-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .branch-desc {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+        
+        /* أنماط الصفحة الثانية */
+        .branch-details {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            margin-top: 20px;
+        }
+        
+        .branch-details.active {
+            display: block;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            color: #2c3e50;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .branch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .branch-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>إدارة فروع الشركة المختلفة</h1>
+            <p class="subtitle">نظرة عامة على أقسام الشركة وأدائها</p>
+        </header>
+        
+        <div class="cards-container">
+            <!-- قسم الفروع -->
+            <div class="card branches">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <h2>الفروع</h2>
+                    </div>
+                    <div class="status active">نشط</div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="description">إدارة فروع الشركة المختلفة والتنسيق بينها لتحقيق الأهداف المشتركة.</p>
+                    
+                    <!-- القائمة المنسدلة للفروع -->
+                    <div class="branches-dropdown" id="branchesDropdown">
+                        <div class="dropdown-header" id="dropdownHeader">
+                            <h3>قائمة الفروع</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <ul class="branches-list">
+                            <li class="branch-item" data-branch="DMPTM">
+                                <div class="branch-name">DMPTM</div>
+                                <div class="branch-desc">فرع إدارة المشاريع والتقنيات الحديثة</div>
+                            </li>
+                            <li class="branch-item" data-branch="HR">
+                                <div class="branch-name">HR</div>
+                                <div class="branch-desc">فرع الموارد البشرية والتطوير</div>
+                            </li>
+                            <li class="branch-item" data-branch="Finance">
+                                <div class="branch-name">Finance</div>
+                                <div class="branch-desc">فرع المالية والمحاسبة</div>
+                            </li>
+                            <li class="branch-item" data-branch="Marketing">
+                                <div class="branch-name">Marketing</div>
+                                <div class="branch-desc">فرع التسويق والمبيعات</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span class="progress-label"> </span>
+                            <span class="progress-percent"></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="#" class="btn">الدخول</a>
+                </div>
+            </div>
+            
+            <!-- قسم التطوير -->
+            <div class="card development">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h2>التطوير</h2>
+                    </div>
+                    <div class="status active">نشط</div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="description">تطوير منتجات وخدمات الشركة باستخدام أحدث التقنيات والمعايير.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span class="progress-label"> </span>
+                            <span class="progress-percent"></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="#" class="btn">الدخول</a>
+                </div>
+            </div>
+            
+            <!-- قسم التنسيق -->
+            <div class="card coordination">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h2>الخدمات</h2>
+                    </div>
+                    <div class="status active">نشط</div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="description">التنسيق بين المشاريع والفرق المختلفة لضمان سير العمل بسلاسة.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"></div>
+                            <div class="stat-label"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                        <!--<span class="progress-label">معدل الإنجاز</span>
+                            <span class="progress-percent">72%</span>-->
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="#" class="btn">الدخول</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحة تفاصيل الفرع -->
+        <div class="branch-details" id="branchDetails">
+            <a href="#" class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </a>
+            
+            <div class="branch-header">
+                <h2 class="branch-title" id="branchTitle">تفاصيل الفرع</h2>
+                <div class="status active">نشط</div>
+            </div>
+            
+            <div class="branch-content" id="branchContent">
+                <!-- سيتم تعبئة المحتوى ديناميكيًا -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التحكم في القائمة المنسدلة
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownHeader = document.getElementById('dropdownHeader');
+            const branchesDropdown = document.getElementById('branchesDropdown');
+            const branchItems = document.querySelectorAll('.branch-item');
+            const branchDetails = document.getElementById('branchDetails');
+            const branchTitle = document.getElementById('branchTitle');
+            const branchContent = document.getElementById('branchContent');
+            const backBtn = document.getElementById('backBtn');
+            
+            // فتح/إغلاق القائمة المنسدلة
+            dropdownHeader.addEventListener('click', function() {
+                branchesDropdown.classList.toggle('active');
+                dropdownHeader.classList.toggle('active');
+            });
+            
+            // الانتقال لصفحة الفرع
+            branchItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const branchName = this.getAttribute('data-branch');
+                    showBranchDetails(branchName);
+                });
+            });
+            
+            // العودة للصفحة الرئيسية
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                branchDetails.classList.remove('active');
+            });
+            
+            // عرض تفاصيل الفرع
+            function showBranchDetails(branchName) {
+                // إخفاء القائمة المنسدلة
+                branchesDropdown.classList.remove('active');
+                dropdownHeader.classList.remove('active');
+                
+                // تعيين عنوان الفرع
+                branchTitle.textContent = `فرع ${branchName}`;
+                
+                // تعبئة محتوى الفرع بناءً على الاسم
+                let content = '';
+                
+                switch(branchName) {
+                    case 'DMPTM':
+                        content = `
+                            <div class="description">
+                                <p>فرع إدارة المشاريع والتقنيات الحديثة (DMPTM) مسؤول عن تخطيط وتنفيذ المشاريع التقنية في الشركة.</p>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">15</div>
+                                    <div class="stat-label">مشروع نشط</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">8</div>
+                                    <div class="stat-label">فريق عمل</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">92%</div>
+                                    <div class="stat-label">معدل الإنجاز</div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-info">
+                                    <span class="progress-label">معدل الإنجاز</span>
+                                    <span class="progress-percent">92%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%; background: linear-gradient(to right, #3498db, #2c3e50);"></div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'HR':
+                        content = `
+                            <div class="description">
+                                <p>فرع الموارد البشرية (HR) مسؤول عن إدارة وتطوير الكوادر البشرية في الشركة.</p>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">120</div>
+                                    <div class="stat-label">موظف</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">5</div>
+                                    <div class="stat-label">برنامج تدريبي</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">88%</div>
+                                    <div class="stat-label">رضا الموظفين</div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'Finance':
+                        content = `
+                            <div class="description">
+                                <p>فرع المالية (Finance) مسؤول عن إدارة الشؤون المالية والمحاسبية للشركة.</p>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">25</div>
+                                    <div class="stat-label">معاملة يومية</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">تقرير شهري</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">95%</div>
+                                    <div class="stat-label">دقة البيانات</div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'Marketing':
+                        content = `
+                            <div class="description">
+                                <p>فرع التسويق (Marketing) مسؤول عن تطوير استراتيجيات التسويق والمبيعات للشركة.</p>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">8</div>
+                                    <div class="stat-label">حملة تسويقية</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">150</div>
+                                    <div class="stat-label">عميل جديد</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">78%</div>
+                                    <div class="stat-label">نمو المبيعات</div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    default:
+                        content = `<p>لا توجد معلومات متاحة لهذا الفرع حالياً.</p>`;
+                }
+                
+                branchContent.innerHTML = content;
+                branchDetails.classList.add('active');
+                
+                // التمرير إلى أعلى الصفحة
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>

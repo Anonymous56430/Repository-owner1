@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قيد التطوير</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #FFF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            padding: 2rem;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #111;
+        }
+        h1 {
+            color: #4FC3F7; /* لون أزرق فاتح */
+            margin-bottom: 1rem;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #CCC;
+        }
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background-color: #333;
+            border-radius: 3px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .progress {
+            width: 60%; /* يمكنك تغيير النسبة */
+            height: 100%;
+            background-color: #4FC3F7;
+            border-radius: 3px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        .dotted-line {
+            border-top: 1px dashed #444;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏳ قيد التخطيط والتطوير</h1>
+        <p>
+            هذا المحتوى أو الميزة قيد الإنشاء حاليًا.<br>
+        </p>
+        
+        <div class="dotted-line"></div>
+        
+        <p>
+        </p>
+        
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        
+    </div>
+</body>
+</html>

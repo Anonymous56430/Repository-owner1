@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الإدارة - الشركة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="ad2.css">
+</head>
+<body>
+    <header class="o1">
+        <div class="o5">
+            <div class="o6">
+                <div class="o7">
+                    <img id="o8" src="https://via.placeholder.com/50" alt="صورة المستخدم">
+                </div>
+                <div class="o9">
+                    <div class="o10" id="o12">مرحبا، محمد</div>
+                    <div class="o11">المدير العام</div>
+                </div>
+            </div>
+            <button class="o23" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل خروج</span>
+            </button>
+        </div>
+        
+        <div class="o13">
+            <div class="o14">
+                <span class="o15">الإدارة</span>
+                <span class="o16">نظام إدارة الشركة المتكامل</span>
+            </div>
+        </div>
+        
+        <div class="o4">
+            <div class="o18">
+                <i class="fas fa-clock"></i>
+                <span id="o20">10:30:45</span>
+            </div>
+            <button class="o23" onclick="toggleLeftSidebar()">
+                <i class="fas fa-bars"></i>
+                <span>القائمة</span>
+            </button>
+        </div>
+    </header>
+
+    <button class="o24" onclick="toggleLeftSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="o25" id="o26">
+        <div class="o27">
+            <div class="o28" onclick="closeLeftSidebar()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="o29">
+                <button class="o30" onclick="toggleLeftSidebarExpand()">
+                    <i class="fas fa-expand" id="o31"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="o32">
+            <button class="o33 active" onclick="switchLeftTab('chat')">
+                <i class="fas fa-comments"></i>
+                <span>المحادثات</span>
+            </button>
+            <button class="o33" onclick="switchLeftTab('notifications')">
+                <i class="fas fa-bell"></i>
+                <span>الإشعارات</span>
+            </button>
+            <button class="o33" onclick="switchLeftTab('tasks')">
+                <i class="fas fa-tasks"></i>
+                <span>المهام</span>
+            </button>
+        </div>
+        
+        <div id="chat" class="o35 active">
+            <div class="o46">
+                <div class="o47">
+                    <div class="o48">
+                        <h5>المشرفون</h5>
+                        <div class="o49 o50" onclick="openChat('management')">
+                            <div class="o51">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">مجموعة الإدارة</div>
+                                <div class="o54">متصل</div>
+                            </div>
+                            <div class="o55">5</div>
+                        </div>
+                        <div class="o49" onclick="openChat('managers')">
+                            <div class="o51">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">مجموعة المدراء</div>
+                                <div class="o54">7 متصل</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="o48">
+                        <h5>الأقسام</h5>
+                        <div class="o49" onclick="openChat('desktop')">
+                            <div class="o51">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم تطوير سطح المكتب</div>
+                                <div class="o54">8 متصل</div>
+                            </div>
+                            <div class="o55">3</div>
+                        </div>
+                        <div class="o49" onclick="openChat('web')">
+                            <div class="o51">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم تطوير الويب</div>
+                                <div class="o54">6 متصل</div>
+                            </div>
+                        </div>
+                        <div class="o49" onclick="openChat('design')">
+                            <div class="o51">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم التصميم</div>
+                                <div class="o54">4 متصل</div>
+                            </div>
+                            <div class="o55">1</div>
+                        </div>
+                        <div class="o49" onclick="openChat('mobile')">
+                            <div class="o51">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم تطبيقات الجوال</div>
+                                <div class="o54">9 متصل</div>
+                            </div>
+                        </div>
+                        <div class="o49" onclick="openChat('support')">
+                            <div class="o51">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم الصيانة والدعم</div>
+                                <div class="o54">5 متصل</div>
+                            </div>
+                        </div>
+                        <div class="o49" onclick="openChat('hosting')">
+                            <div class="o51">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم الاستضافة</div>
+                                <div class="o54">3 متصل</div>
+                            </div>
+                        </div>
+                        <div class="o49" onclick="openChat('consulting')">
+                            <div class="o51">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="o52">
+                                <div class="o53">قسم الاستشارات</div>
+                                <div class="o54">2 متصل</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="o56" id="o57">
+                    <div class="o58">
+                        <i class="fas fa-comments"></i>
+                        <p>اختر محادثة لبدء الدردشة</p>
+                    </div>
+                    
+                    <div class="o59" style="display: none;">
+                        <div class="o60">
+                            <div class="o61">
+                                <div class="o51">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="o62">
+                                    <div class="o53" id="o63">الإدارة</div>
+                                    <div class="o54">متصل</div>
+                                </div>
+                            </div>
+                            <div class="o64">
+                                <button class="o21 o37" onclick="toggleChatFullscreen()">
+                                    <i class="fas fa-expand" id="o65"></i>
+                                </button>
+                                <button class="o21 o37" onclick="closeActiveChat()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="o66" id="o67">
+                        </div>
+                        
+                        <div class="o68">
+                            <input type="text" id="o69" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key === 'Enter') sendActiveChatMessage()">
+                            <button class="o21" onclick="sendActiveChatMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="notifications" class="o35">
+            <div class="o36">
+                <h4>الإشعارات</h4>
+                <button class="o21 o37" onclick="markAllAsRead()">تحديد الكل كمقروء</button>
+            </div>
+            <div class="o38">
+                <div class="o40 o41">
+                    <div class="o42">اجتماع الإدارة الأسبوعي</div>
+                    <div class="o43">اجتماع الإدارة الأسبوعي يوم الاثنين الساعة 10 صباحاً</div>
+                    <div class="o44">قبل 2 ساعة</div>
+                </div>
+                <div class="o40 o41">
+                    <div class="o42">تقرير الأداء الشهري</div>
+                    <div class="o43">يرجى مراجعة تقرير الأداء الشهري للشركة</div>
+                    <div class="o44">قبل 5 ساعات</div>
+                </div>
+                <div class="o40">
+                    <div class="o42">ميزانية الربع الأول</div>
+                    <div class="o43">تم اعتماد ميزانية الربع الأول للشركة</div>
+                    <div class="o44">أمس</div>
+                </div>
+                <div class="o40">
+                    <div class="o42">اجتماع مدراء الأقسام</div>
+                    <div class="o43">اجتماع مدراء الأقسام يوم الأربعاء القادم</div>
+                    <div class="o44">الاثنين</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tasks" class="o35">
+            <div class="o71">
+                <div class="o72">
+                    <h4>المهام</h4>
+                    <button class="o21 o37" onclick="showAddTaskModal()">إضافة مهمة</button>
+                </div>
+                <div class="o73">
+                    <div class="o74">
+                        <h5>المهام الحالية</h5>
+                        <div class="o75" id="o76">
+                        </div>
+                    </div>
+                    <div class="o74">
+                        <h5>المهام القادمة</h5>
+                        <div class="o75" id="o77">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="o78 open" id="o79">
+        <ul class="o80">
+            <li><a href="#" class="active" onclick="showTab('dashboard')"><i class="fas fa-tachometer-alt"></i>لوحة التحكم</a></li>
+            <li><a href="#" onclick="showTab('departments')"><i class="fas fa-sitemap"></i>إدارة الأقسام</a></li>
+            <li><a href="#" onclick="showTab('employees')"><i class="fas fa-users"></i>إدارة الموظفين</a></li>
+            <li><a href="#" onclick="showTab('reports')"><i class="fas fa-chart-bar"></i>التقارير والإحصائيات</a></li>
+        <li><a href="#" onclick="openEmployeeManagementSystem()"><i class="fas fa-user-cog"></i>نظام إدارة الموظفين</a></li>
+    
+            <li><a href="#" onclick="showTab('settings')"><i class="fas fa-cogs"></i>الإعدادات</a></li>
+        </ul>
+        
+        <div class="o81">
+            <div class="o82">
+                <div class="o83">
+                    <button onclick="toggleCalendar()">
+                        <span id="o84">ديسمبر 2024</span>
+                        <i class="fas fa-calendar-alt"></i>
+                    </button>
+                </div>
+                <div class="o85" id="o86">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="o87" id="o88">
+        <div class="o90">
+            <div class="o91">
+                <div class="o92">
+                    <div class="o93">المدير العام</div>
+                    <div class="o94" id="o94">محمد أحمد سليمان</div>
+                    <div class="o95">رقم الموظف: <span id="o96">MNG-001</span></div>
+                </div>
+                <div class="o97">
+                    نظام إدارة الشركة
+                    <div class="o98" id="o99">السبت، 21 ديسمبر 2024</div>
+                </div>
+                <div class="o98">
+                    آخر تحديث: الآن
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard" class="o89 active">
+            <div class="o100">
+                <div class="om1 om2">
+                    <h3>إجمالي الأقسام</h3>
+                    <div class="om3" id="om4">8</div>
+                    <div class="om5">جميع أقسام الشركة</div>
+                </div>
+                <div class="om1 om6">
+                    <h3>إجمالي الموظفين</h3>
+                    <div class="om3" id="om7">85</div>
+                    <div class="om5">جميع موظفي الشركة</div>
+                </div>
+                <div class="om1 om8">
+                    <h3>المشاريع النشطة</h3>
+                    <div class="om3" id="om9">24</div>
+                    <div class="om5">مشاريع قيد التنفيذ</div>
+                </div>
+                <div class="om1 om10">
+                    <h3>الإيرادات الشهرية</h3>
+                    <div class="om3" id="om11">1,250,000 ر.س</div>
+                    <div class="om5">إجمالي الإيرادات</div>
+                </div>
+            </div>
+            
+            <div class="om12">
+                <div class="om13">
+                    <h3>توزيع الموظفين حسب الأقسام</h3>
+                    <canvas id="om14"></canvas>
+                </div>
+                <div class="om13">
+                    <h3>مؤشرات الأداء الشهرية</h3>
+                    <canvas id="om15"></canvas>
+                </div>
+            </div>
+            
+            <div class="om16">
+                <div class="om17">
+                    <h3>آخر الأنشطة</h3>
+                    <button class="o21 om21" onclick="showAddSystemModal()">إضافة نشاط</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>النشاط</th>
+                            <th>القسم</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="om22">
+                        <tr>
+                            <td>اجتماع الإدارة الشهري</td>
+                            <td>الإدارة</td>
+                            <td>2024-12-20</td>
+                            <td><span class="status-completed">مكتمل</span></td>
+                            <td>
+                                <button class="o21 o37">عرض</button>
+                                <button class="o21 o37 o22">حذف</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>مراجعة الميزانية</td>
+                            <td>المالية</td>
+                            <td>2024-12-18</td>
+                            <td><span class="status-inprogress">قيد التنفيذ</span></td>
+                            <td>
+                                <button class="o21 o37">عرض</button>
+                                <button class="o21 o37 o22">حذف</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>تقييم الأداء الربع سنوي</td>
+                            <td>الموارد البشرية</td>
+                            <td>2024-12-15</td>
+                            <td><span class="status-completed">مكتمل</span></td>
+                            <td>
+                                <button class="o21 o37">عرض</button>
+                                <button class="o21 o37 o22">حذف</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="departments" class="o89">
+            <div class="om24">
+                <h2>إدارة أقسام الشركة</h2>
+                <p>إدارة جميع أقسام الشركة والموظفين والمشاريع</p>
+            </div>
+            
+            <div class="om28">
+                <div class="om29" onclick="openDepartmentPage('finance')">
+                    <div class="om30">
+                        <h4>المالية</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الميزانية</span>
+                        <span class="om34">المصروفات</span>
+                        <span class="om34">الإيرادات</span>
+                    </div>
+                    <p>إدارة الأمور المالية والمحاسبية</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 8 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 12 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 88%"></div>
+                        </div>
+                        <span>88%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('finance')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('marketing')">
+                    <div class="om30">
+                        <h4>التسويق</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الحملات</span>
+                        <span class="om34">تحليل السوق</span>
+                        <span class="om34">المنافسين</span>
+                    </div>
+                    <p>خطط وتنفيذ الحملات التسويقية</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 10 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 15 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 75%"></div>
+                        </div>
+                        <span>75%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('marketing')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('sales')">
+                    <div class="om30">
+                        <h4>المبيعات</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">إدارة المبيعات</span>
+                        <span class="om34">العملاء</span>
+                        <span class="om34">المبيعات</span>
+                    </div>
+                    <p>إدارة عمليات البيع والمبيعات</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 12 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 20 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 82%"></div>
+                        </div>
+                        <span>82%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('sales')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('hr')">
+                    <div class="om30">
+                        <h4>شؤون الموظفين</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الموظفين</span>
+                        <span class="om34">الرواتب</span>
+                        <span class="om34">التدريب</span>
+                    </div>
+                    <p>إدارة شؤون الموظفين والمزايا</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 6 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 8 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 90%"></div>
+                        </div>
+                        <span>90%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('hr')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('customer-service')">
+                    <div class="om30">
+                        <h4>خدمة العملاء</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الدعم</span>
+                        <span class="om34">المعرفة</span>
+                        <span class="om34">التذاكر</span>
+                    </div>
+                    <p>دعم وخدمة عملاء الشركة</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 15 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 25 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 85%"></div>
+                        </div>
+                        <span>85%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('customer-service')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('subscribers')">
+                    <div class="om30">
+                        <h4>خدمة المشتركين</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الاشتراكات</span>
+                        <span class="om34">التجديد</span>
+                        <span class="om34">المشتركين</span>
+                    </div>
+                    <p>إدارة خدمات الاشتراكات</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 8 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 18 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 78%"></div>
+                        </div>
+                        <span>78%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('subscribers')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('monitoring')">
+                    <div class="om30">
+                        <h4>الرقابة</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الأداء</span>
+                        <span class="om34">التقارير</span>
+                        <span class="om34">المراقبة</span>
+                    </div>
+                    <p>مراقبة أداء الأقسام والموظفين</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 5 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 10 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 92%"></div>
+                        </div>
+                        <span>92%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('monitoring')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('logistics')">
+                    <div class="om30">
+                        <h4>اللوجيستك</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">المخزون</span>
+                        <span class="om34">الشحن</span>
+                        <span class="om34">التوريد</span>
+                    </div>
+                    <p>إدارة سلسلة التوريد والشحن</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 9 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 14 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 80%"></div>
+                        </div>
+                        <span>80%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('logistics')">الدخول</button>
+                    </div>
+                </div>
+                
+                <div class="om29" onclick="openDepartmentPage('technology')">
+                    <div class="om30">
+                        <h4>التكنولوجيا</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الأنظمة</span>
+                        <span class="om34">الأمن</span>
+                        <span class="om34">التقنية</span>
+                    </div>
+                    <p>إدارة البنية التقنية والأنظمة</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 7 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 16 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 87%"></div>
+                        </div>
+                        <span>87%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('technology')">الدخول</button>
+                    </div>
+                </div>
+                <!---->
+                <!--  
+                <div class="om29" onclick="openDepartmentPage('branches')">
+                    <div class="om30">
+                        <h4>الفروع</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الفروع</span>
+                        <span class="om34">التنسيق</span>
+                        <span class="om34">الإدارة</span>
+                    </div>
+                    <p>إدارة فروع الشركة المختلفة</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 11 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 9 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 83%"></div>
+                        </div>
+                        <span>83%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('branches')">الدخول</button>
+                    </div>
+                </div>
+                
+                - قسم التطوير 
+                <div class="om29" onclick="openDepartmentPage('development')">
+                    <div class="om30">
+                        <h4>التطوير</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">المشاريع</span>
+                        <span class="om34">البحوث</span>
+                        <span class="om34">التطوير</span>
+                    </div>
+                    <p>تطوير منتجات وخدمات الشركة</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 10 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 12 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 79%"></div>
+                        </div>
+                        <span>79%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('development')">الدخول</button>
+                    </div>
+                </div>
+                
+                 
+                <div class="om29" onclick="openDepartmentPage('services')">
+                    <div class="om30">
+                        <h4>الخدمات</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الخدمات</span>
+                        <span class="om34">الجودة</span>
+                        <span class="om34">الإدارة</span>
+                    </div>
+                    <p>إدارة الخدمات المقدمة للعملاء</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 8 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 15 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 86%"></div>
+                        </div>
+                        <span>86%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('services')">الدخول</button>
+                    </div>
+                </div>
+                -->
+                <div class="om29" onclick="openDepartmentPage('partners')">
+                    <div class="om30">
+                        <h4>شركاء النجاح</h4>
+                        <span class="om31 om32">نشط</span>
+                    </div>
+                    <div class="om33">
+                        <span class="om34">الشركاء</span>
+                        <span class="om34">المشاريع</span>
+                        <span class="om34">الإدارة</span>
+                    </div>
+                    <p>الشركات التابعة للشركة الأم</p>
+                    <div class="om35">
+                        <span class="om36"><i class="fas fa-users"></i> 6 موظف</span>
+                        <span class="om36"><i class="fas fa-project-diagram"></i> 11 مشروع</span>
+                    </div>
+                    <div class="om37">
+                        <div class="om38">
+                            <div class="om39" style="width: 81%"></div>
+                        </div>
+                        <span>81%</span>
+                    </div>
+                    <div class="om40">
+                        <button class="o21 o37" onclick="event.stopPropagation(); openDepartmentPage('partners')">الدخول</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="departmentDetails" class="o89" style="display: none;">
+            <div class="om24">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 id="deptDetailTitle">تفاصيل القسم</h2>
+                        <p id="deptDetailSubtitle">معلومات القسم والموظفين</p>
+                    </div>
+                    <button class="o21 o22" onclick="showTab('departments')">
+                        <i class="fas fa-arrow-right"></i> العودة للأقسام
+                    </button>
+                </div>
+            </div>
+            
+            <div class="o100">
+                <div class="om1 om2">
+                    <h3>مدير القسم</h3>
+                    <div class="om3" id="deptManagerName">أحمد محمد</div>
+                    <div class="om5" id="deptManagerRole">مدير القسم</div>
+                </div>
+                <div class="om1 om6">
+                    <h3>عدد الموظفين</h3>
+                    <div class="om3" id="deptEmployeeCount">12</div>
+                    <div class="om5">إجمالي الموظفين</div>
+                </div>
+                <div class="om1 om8">
+                    <h3>المشاريع النشطة</h3>
+                    <div class="om3" id="deptProjectCount">8</div>
+                    <div class="om5">مشاريع قيد التنفيذ</div>
+                </div>
+                <div class="om1 om10">
+                    <h3>معدل الإنجاز</h3>
+                    <div class="om3" id="deptProgress">85%</div>
+                    <div class="om5">معدل تقدم المشاريع</div>
+                </div>
+            </div>
+            
+            <div class="om24">
+                <h3>خدمات القسم</h3>
+                <p>الخدمات المتاحة في هذا القسم والموظفين المسؤولين عنها</p>
+            </div>
+            
+            <div class="om28" id="deptServicesContainer">
+            </div>
+        </div>
+
+        <div id="employees" class="o89">
+            <div class="om24">
+                <h2>إدارة الموظفين</h2>
+                <p>إدارة جميع موظفي الشركة ومعلوماتهم</p>
+            </div>
+        </div>
+
+        <div id="reports" class="o89">
+            <div class="om24">
+                <h2>التقارير والإحصائيات</h2>
+                <p>عرض التقارير والإحصائيات الشاملة للشركة</p>
+            </div>
+        </div>
+
+        <div id="finance" class="o89">
+            <div class="om24">
+                <h2>الشؤون المالية</h2>
+                <p>إدارة الشؤون المالية والمحاسبية للشركة</p>
+            </div>
+        </div>
+
+        <div id="settings" class="o89">
+            <div class="om24">
+                <h2>إعدادات النظام</h2>
+                <p>إعدادات وتخصيص نظام إدارة الشركة</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="om48" id="om49" style="display: none;">
+        <div class="om50">
+            <div class="om51">
+                <div>
+                    <button class="o21 o37" onclick="changeMonth(-1)"><i class="fas fa-chevron-right"></i></button>
+                    <span id="om52">ديسمبر 2024</span>
+                    <button class="o21 o37" onclick="changeMonth(1)"><i class="fas fa-chevron-left"></i></button>
+                </div>
+                <button class="o21 o22" onclick="toggleCalendar()">إغلاق</button>
+            </div>
+            <div class="om53">
+                <div class="om54">
+                    <div class="om56">
+                        <h5>المهام</h5>
+                        <button class="o21 o37" onclick="showAddTaskModal()">إضافة مهمة</button>
+                    </div>
+                    <div id="om55">
+                    </div>
+                </div>
+                <div class="om57">
+                    <div class="om58">
+                        <h5>التقويم</h5>
+                    </div>
+                    <div class="om59" id="om60">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="om61" id="om62" style="display: none;">
+        <div class="om63">
+            <div class="om64">
+                <h3>إضافة نشاط جديد</h3>
+                <button onclick="closeModal('om62')">&times;</button>
+            </div>
+            <div class="om65">
+                <div class="om66">
+                    <div class="om67">
+                        <label for="om68">اسم النشاط</label>
+                        <input type="text" id="om68" class="om69" placeholder="أدخل اسم النشاط">
+                    </div>
+                    <div class="om67">
+                        <label for="om70">القسم</label>
+                        <select id="om70" class="om69">
+                            <option value="management">الإدارة</option>
+                            <option value="desktop">تطوير سطح المكتب</option>
+                            <option value="web">تطوير الويب</option>
+                            <option value="design">التصميم</option>
+                            <option value="mobile">تطبيقات الجوال</option>
+                            <option value="support">الصيانة والدعم</option>
+                            <option value="hosting">الاستضافة</option>
+                            <option value="consulting">الاستشارات</option>
+                            <option value="accounting">المحاسبة</option>
+                            <option value="partners">الشركاء</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="om66">
+                    <div class="om67">
+                        <label for="om71">نوع النشاط</label>
+                        <select id="om71" class="om69">
+                            <option value="meeting">اجتماع</option>
+                            <option value="report">تقرير</option>
+                            <option value="review">مراجعة</option>
+                            <option value="evaluation">تقييم</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="om67">
+                        <label for="om72">الحالة</label>
+                        <select id="om72" class="om69">
+                            <option value="completed">مكتمل</option>
+                            <option value="inprogress">قيد التنفيذ</option>
+                            <option value="pending">معلق</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="om67">
+                    <label for="om73">تاريخ النشاط</label>
+                    <input type="date" id="om73" class="om69">
+                </div>
+                <div class="om67">
+                    <label for="om74">وصف النشاط</label>
+                    <textarea id="om74" class="om69" rows="3" placeholder="أدخل وصف النشاط"></textarea>
+                </div>
+                <div class="om75">
+                    <button class="o21 om21" onclick="saveSystem()">حفظ النشاط</button>
+                    <button class="o21 o22" onclick="closeModal('om62')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="ad2.js"></script>
+</body>
+</html>

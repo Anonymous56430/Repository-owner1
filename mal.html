@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النظام المالي المتكامل - قسم المالية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            direction: rtl;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary);
+            color: white;
+            transition: all 0.3s;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: var(--dark);
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-menu {
+            padding: 15px 0;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            margin-right: var(--sidebar-width);
+            transition: all 0.3s;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+
+        /* البطاقات */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .card-content p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* الجداول */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 15px 20px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        /* النماذج */
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* الرسوم البيانية */
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            height: 300px;
+        }
+
+        /* الصفحات المخفية */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* حالة الشريط الجانبي المخفي */
+        .sidebar-collapsed .sidebar {
+            width: 70px;
+        }
+
+        .sidebar-collapsed .sidebar-header h2,
+        .sidebar-collapsed .sidebar-menu span {
+            display: none;
+        }
+
+        .sidebar-collapsed .main-content {
+            margin-right: 70px;
+        }
+
+        .sidebar-collapsed .sidebar-menu a {
+            justify-content: center;
+        }
+
+        .sidebar-collapsed .sidebar-menu i {
+            margin-left: 0;
+        }
+
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-header h2,
+            .sidebar-menu span {
+                display: none;
+            }
+
+            .main-content {
+                margin-right: 70px;
+            }
+
+            .sidebar-menu a {
+                justify-content: center;
+            }
+
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-chart-line"></i> النظام المالي</h2>
+                <p>الإصدار 1.0</p>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> <span>لوحة التحكم</span></a></li>
+                    <li><a href="#" data-page="journal"><i class="fas fa-book"></i> <span>القيد اليومي</span></a></li>
+                    <li><a href="#" data-page="accounts"><i class="fas fa-chart-bar"></i> <span>الحسابات</span></a></li>
+                    <li><a href="#" data-page="inventory"><i class="fas fa-boxes"></i> <span>المخزون</span></a></li>
+                    <li><a href="#" data-page="financial-statements"><i class="fas fa-file-invoice-dollar"></i> <span>القوائم المالية</span></a></li>
+                    <li><a href="#" data-page="reports"><i class="fas fa-chart-pie"></i> <span>التقارير</span></a></li>
+                    <li><a href="#" data-page="settings"><i class="fas fa-cogs"></i> <span>الإعدادات</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- الرأس -->
+            <div class="header">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="user-info">
+                    <div>
+                        <h4>أحمد محمد</h4>
+                        <p>مدير النظام</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=أحمد+محمد&background=3498db&color=fff" alt="صورة المستخدم">
+                </div>
+            </div>
+
+            <!-- المحتوى -->
+            <div class="content">
+                <!-- صفحة لوحة التحكم -->
+                <div class="page active" id="dashboard">
+                    <h1 class="page-title">لوحة التحكم المالية</h1>
+                    
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">إجمالي الإيرادات</h3>
+                                <div class="card-icon" style="background: var(--success);">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>125,000 ر.س</h3>
+                                <p>+5% عن الشهر الماضي</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">إجمالي المصروفات</h3>
+                                <div class="card-icon" style="background: var(--danger);">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>85,000 ر.س</h3>
+                                <p>+2% عن الشهر الماضي</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">صافي الربح</h3>
+                                <div class="card-icon" style="background: var(--secondary);">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>40,000 ر.س</h3>
+                                <p>+10% عن الشهر الماضي</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">التدفق النقدي</h3>
+                                <div class="card-icon" style="background: var(--warning);">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>25,000 ر.س</h3>
+                                <p>+8% عن الشهر الماضي</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>الإيرادات والمصروفات خلال السنة</h3>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>آخر المعاملات المالية</h3>
+                            <button class="btn btn-primary">عرض الكل</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>رقم المعاملة</th>
+                                        <th>التاريخ</th>
+                                        <th>الوصف</th>
+                                        <th>نوع المعاملة</th>
+                                        <th>المبلغ</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TXN-001</td>
+                                        <td>2023-10-15</td>
+                                        <td>تحصيل مستحقات من عميل</td>
+                                        <td>إيراد</td>
+                                        <td>5,000 ر.س</td>
+                                        <td><span style="color: var(--success);">مكتمل</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TXN-002</td>
+                                        <td>2023-10-14</td>
+                                        <td>دفع فواتير موردين</td>
+                                        <td>مصروف</td>
+                                        <td>3,000 ر.س</td>
+                                        <td><span style="color: var(--success);">مكتمل</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TXN-003</td>
+                                        <td>2023-10-13</td>
+                                        <td>مرتبات الموظفين</td>
+                                        <td>مصروف</td>
+                                        <td>15,000 ر.س</td>
+                                        <td><span style="color: var(--warning);">قيد المعالجة</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة القيود اليومية -->
+                <div class="page" id="journal">
+                    <h1 class="page-title">القيد اليومي</h1>
+                    
+                    <div class="form-container">
+                        <h3>إضافة قيد جديد</h3>
+                        <form id="journalForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="journalDate">التاريخ</label>
+                                    <input type="date" id="journalDate" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="journalNumber">رقم القيد</label>
+                                    <input type="text" id="journalNumber" class="form-control" value="J-004" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="journalDescription">وصف القيد</label>
+                                <input type="text" id="journalDescription" class="form-control" required>
+                            </div>
+                            
+                            <h4>بنود القيد</h4>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>الحساب</th>
+                                            <th>الوصف</th>
+                                            <th>مدين</th>
+                                            <th>دائن</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="journalEntries">
+                                        <tr>
+                                            <td>
+                                                <select class="form-control">
+                                                    <option>النقدية</option>
+                                                    <option>البنك</option>
+                                                    <option>المبيعات</option>
+                                                    <option>المشتريات</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" class="form-control" placeholder="وصف البند"></td>
+                                            <td><input type="number" class="form-control" placeholder="0.00"></td>
+                                            <td><input type="number" class="form-control" placeholder="0.00"></td>
+                                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">حذف</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="addJournalEntry()">إضافة بند</button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">حفظ القيد</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>سجل القيود</h3>
+                            <div>
+                                <input type="text" class="form-control" placeholder="بحث..." style="display: inline-block; width: auto;">
+                                <button class="btn btn-primary">بحث</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>رقم القيد</th>
+                                        <th>التاريخ</th>
+                                        <th>الوصف</th>
+                                        <th>المدين</th>
+                                        <th>الدائن</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>J-001</td>
+                                        <td>2023-10-15</td>
+                                        <td>بيع بضاعة</td>
+                                        <td>5,000 ر.س</td>
+                                        <td>5,000 ر.س</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>J-002</td>
+                                        <td>2023-10-14</td>
+                                        <td>شراء أثاث</td>
+                                        <td>3,000 ر.س</td>
+                                        <td>3,000 ر.س</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>J-003</td>
+                                        <td>2023-10-13</td>
+                                        <td>مرتبات الموظفين</td>
+                                        <td>15,000 ر.س</td>
+                                        <td>15,000 ر.س</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">عرض</button>
+                                            <button class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة الحسابات -->
+                <div class="page" id="accounts">
+                    <h1 class="page-title">الحسابات</h1>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="chart">دليل الحسابات</div>
+                        <div class="tab" data-tab="ledger">كشف الحساب</div>
+                        <div class="tab" data-tab="balance">ميزان المراجعة</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="chart">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>دليل الحسابات</h3>
+                                <button class="btn btn-primary">إضافة حساب</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>رقم الحساب</th>
+                                            <th>اسم الحساب</th>
+                                            <th>النوع</th>
+                                            <th>الرصيد</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>النقدية</td>
+                                            <td>أصول</td>
+                                            <td>25,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>102</td>
+                                            <td>البنك</td>
+                                            <td>أصول</td>
+                                            <td>150,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>201</td>
+                                            <td>الموردين</td>
+                                            <td>خصوم</td>
+                                            <td>45,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>301</td>
+                                            <td>رأس المال</td>
+                                            <td>حقوق ملكية</td>
+                                            <td>200,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>401</td>
+                                            <td>المبيعات</td>
+                                            <td>إيرادات</td>
+                                            <td>125,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>501</td>
+                                            <td>المشتريات</td>
+                                            <td>مصروفات</td>
+                                            <td>85,000 ر.س</td>
+                                            <td><span style="color: var(--success);">نشط</span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">تعديل</button>
+                                                <button class="btn btn-danger btn-sm">إلغاء</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="ledger">
+                        <div class="form-container">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="accountSelect">اختر الحساب</label>
+                                    <select id="accountSelect" class="form-control">
+                                        <option>النقدية</option>
+                                        <option>البنك</option>
+                                        <option>المبيعات</option>
+                                        <option>المشتريات</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="startDate">من تاريخ</label>
+                                    <input type="date" id="startDate" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="endDate">إلى تاريخ</label>
+                                    <input type="date" id="endDate" class="form-control">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">عرض كشف الحساب</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="balance">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>ميزان المراجعة</h3>
+                                <button class="btn btn-primary">طباعة</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>رقم الحساب</th>
+                                            <th>اسم الحساب</th>
+                                            <th>مجموع المدين</th>
+                                            <th>مجموع الدائن</th>
+                                            <th>الرصيد المدين</th>
+                                            <th>الرصيد الدائن</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>النقدية</td>
+                                            <td>50,000 ر.س</td>
+                                            <td>25,000 ر.س</td>
+                                            <td>25,000 ر.س</td>
+                                            <td>0 ر.س</td>
+                                        </tr>
+                                        <tr>
+                                            <td>102</td>
+                                            <td>البنك</td>
+                                            <td>200,000 ر.س</td>
+                                            <td>50,000 ر.س</td>
+                                            <td>150,000 ر.س</td>
+                                            <td>0 ر.س</td>
+                                        </tr>
+                                        <tr>
+                                            <td>201</td>
+                                            <td>الموردين</td>
+                                            <td>20,000 ر.س</td>
+                                            <td>65,000 ر.س</td>
+                                            <td>0 ر.س</td>
+                                            <td>45,000 ر.س</td>
+                                        </tr>
+                                        <tr>
+                                            <td>301</td>
+                                            <td>رأس المال</td>
+                                            <td>0 ر.س</td>
+                                            <td>200,000 ر.س</td>
+                                            <td>0 ر.س</td>
+                                            <td>200,000 ر.س</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center; font-weight: bold;">المجموع</td>
+                                            <td>270,000 ر.س</td>
+                                            <td>270,000 ر.س</td>
+                                            <td>175,000 ر.س</td>
+                                            <td>175,000 ر.س</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة الميزانية -->
+                <div class="page" id="inventory">
+                    <h1 class="page-title">إدارة الميزانية</h1>
+                    
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">الميزانية المعتمدة</h3>
+                                <div class="card-icon" style="background: var(--success);">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>1,200,000 ر.س</h3>
+                                <p>للسنة المالية 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">المصروفات الفعلية</h3>
+                                <div class="card-icon" style="background: var(--danger);">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>850,000 ر.س</h3>
+                                <p>70.8% من الميزانية</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">المتبقي</h3>
+                                <div class="card-icon" style="background: var(--warning);">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>350,000 ر.س</h3>
+                                <p>29.2% من الميزانية</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>توزيع الميزانية حسب الأقسام</h3>
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>تفاصيل الميزانية</h3>
+                            <button class="btn btn-primary">تصدير التقرير</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>القسم</th>
+                                        <th>الميزانية المعتمدة</th>
+                                        <th>المصروفات الفعلية</th>
+                                        <th>المتبقي</th>
+                                        <th>النسبة المئوية</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>التسويق</td>
+                                        <td>200,000 ر.س</td>
+                                        <td>150,000 ر.س</td>
+                                        <td>50,000 ر.س</td>
+                                        <td>75%</td>
+                                        <td><span style="color: var(--success);">ضمن الميزانية</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>التشغيل</td>
+                                        <td>400,000 ر.س</td>
+                                        <td>320,000 ر.س</td>
+                                        <td>80,000 ر.س</td>
+                                        <td>80%</td>
+                                        <td><span style="color: var(--success);">ضمن الميزانية</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>البحث والتطوير</td>
+                                        <td>300,000 ر.س</td>
+                                        <td>280,000 ر.س</td>
+                                        <td>20,000 ر.س</td>
+                                        <td>93%</td>
+                                        <td><span style="color: var(--warning);">شبه منتهي</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>الإدارة</td>
+                                        <td>300,000 ر.س</td>
+                                        <td>100,000 ر.س</td>
+                                        <td>200,000 ر.س</td>
+                                        <td>33%</td>
+                                        <td><span style="color: var(--success);">ضمن الميزانية</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة القوائم المالية -->
+                <div class="page" id="financial-statements">
+                    <h1 class="page-title">القوائم المالية</h1>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="income">قائمة الدخل</div>
+                        <div class="tab" data-tab="balance-sheet">الميزانية العمومية</div>
+                        <div class="tab" data-tab="cash-flow">قائمة التدفقات النقدية</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="income">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>قائمة الدخل للربع الثالث 2023</h3>
+                                <button class="btn btn-primary">طباعة</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>البند</th>
+                                            <th>المبلغ (ر.س)</th>
+                                            <th>النسبة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>الإيرادات</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">المبيعات</td>
+                                            <td>350,000</td>
+                                            <td>100%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي الإيرادات</strong></td>
+                                            <td><strong>350,000</strong></td>
+                                            <td><strong>100%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>تكلفة المبيعات</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">تكلفة البضاعة المباعة</td>
+                                            <td>(150,000)</td>
+                                            <td>43%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي تكلفة المبيعات</strong></td>
+                                            <td><strong>(150,000)</strong></td>
+                                            <td><strong>43%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي الربح</strong></td>
+                                            <td><strong>200,000</strong></td>
+                                            <td><strong>57%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>المصروفات التشغيلية</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الرواتب والمزايا</td>
+                                            <td>(80,000)</td>
+                                            <td>23%</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الإيجار</td>
+                                            <td>(25,000)</td>
+                                            <td>7%</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">التسويق والإعلان</td>
+                                            <td>(15,000)</td>
+                                            <td>4%</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">مصروفات عامة</td>
+                                            <td>(10,000)</td>
+                                            <td>3%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي المصروفات التشغيلية</strong></td>
+                                            <td><strong>(130,000)</strong></td>
+                                            <td><strong>37%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي الدخل التشغيلي</strong></td>
+                                            <td><strong>70,000</strong></td>
+                                            <td><strong>20%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>الإيرادات/المصروفات الأخرى</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">فوائد البنك</td>
+                                            <td>(5,000)</td>
+                                            <td>1%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي الدخل قبل الضرائب</strong></td>
+                                            <td><strong>65,000</strong></td>
+                                            <td><strong>19%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الضرائب (15%)</td>
+                                            <td>(9,750)</td>
+                                            <td>3%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي الدخل</strong></td>
+                                            <td><strong>55,250</strong></td>
+                                            <td><strong>16%</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="balance-sheet">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>الميزانية العمومية - 30 سبتمبر 2023</h3>
+                                <button class="btn btn-primary">طباعة</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>الأصول</th>
+                                            <th>المبلغ (ر.س)</th>
+                                            <th>الخصوم وحقوق الملكية</th>
+                                            <th>المبلغ (ر.س)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>الأصول المتداولة</strong></td>
+                                            <td></td>
+                                            <td><strong>الخصوم المتداولة</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">النقدية</td>
+                                            <td>25,000</td>
+                                            <td style="padding-right: 30px;">الحسابات الدائنة</td>
+                                            <td>45,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الذمم المدينة</td>
+                                            <td>60,000</td>
+                                            <td style="padding-right: 30px;">القروض قصيرة الأجل</td>
+                                            <td>30,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">المخزون</td>
+                                            <td>40,000</td>
+                                            <td style="padding-right: 30px;">الضرائب المستحقة</td>
+                                            <td>9,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي الأصول المتداولة</strong></td>
+                                            <td><strong>125,000</strong></td>
+                                            <td><strong>إجمالي الخصوم المتداولة</strong></td>
+                                            <td><strong>84,750</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>الأصول الثابتة</strong></td>
+                                            <td></td>
+                                            <td><strong>الخصوم طويلة الأجل</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">المباني</td>
+                                            <td>300,000</td>
+                                            <td style="padding-right: 30px;">القروض طويلة الأجل</td>
+                                            <td>150,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الآلات والمعدات</td>
+                                            <td>100,000</td>
+                                            <td><strong>إجمالي الخصوم طويلة الأجل</strong></td>
+                                            <td><strong>150,000</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الأثاث والتجهيزات</td>
+                                            <td>50,000</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي الأصول الثابتة</strong></td>
+                                            <td><strong>450,000</strong></td>
+                                            <td><strong>إجمالي الخصوم</strong></td>
+                                            <td><strong>234,750</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>حقوق الملكية</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="padding-right: 30px;">رأس المال</td>
+                                            <td>200,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="padding-right: 30px;">الأرباح المحتجزة</td>
+                                            <td>140,250</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>إجمالي حقوق الملكية</strong></td>
+                                            <td><strong>340,250</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>إجمالي الأصول</strong></td>
+                                            <td><strong>575,000</strong></td>
+                                            <td><strong>إجمالي الخصوم وحقوق الملكية</strong></td>
+                                            <td><strong>575,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="cash-flow">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>قائمة التدفقات النقدية للربع الثالث 2023</h3>
+                                <button class="btn btn-primary">طباعة</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>البند</th>
+                                            <th>المبلغ (ر.س)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>التدفقات النقدية من الأنشطة التشغيلية</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">صافي الدخل</td>
+                                            <td>55,250</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">+ الاستهلاك</td>
+                                            <td>15,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">+/- التغير في الذمم المدينة</td>
+                                            <td>(10,000)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">+/- التغير في المخزون</td>
+                                            <td>(5,000)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">+/- التغير في الحسابات الدائنة</td>
+                                            <td>8,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي التدفق النقدي من الأنشطة التشغيلية</strong></td>
+                                            <td><strong>63,250</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>التدفقات النقدية من الأنشطة الاستثمارية</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">شراء أصول ثابتة</td>
+                                            <td>(50,000)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">بيع أصول ثابتة</td>
+                                            <td>10,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي التدفق النقدي من الأنشطة الاستثمارية</strong></td>
+                                            <td><strong>(40,000)</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>التدفقات النقدية من الأنشطة التمويلية</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">سداد قروض</td>
+                                            <td>(20,000)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">الحصول على قروض</td>
+                                            <td>30,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي التدفق النقدي من الأنشطة التمويلية</strong></td>
+                                            <td><strong>10,000</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>صافي الزيادة/النقصان في النقدية</strong></td>
+                                            <td><strong>33,250</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">+ النقدية في بداية الفترة</td>
+                                            <td>41,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>النقدية في نهاية الفترة</strong></td>
+                                            <td><strong>75,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة التقارير -->
+                <div class="page" id="reports">
+                    <h1 class="page-title">التقارير المالية</h1>
+                    
+                    <div class="cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">التقرير المالي الشهري</h3>
+                                <div class="card-icon" style="background: var(--secondary);">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <p>تقرير شامل عن الأداء المالي الشهري</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;">إنشاء التقرير</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">تقرير الميزانية</h3>
+                                <div class="card-icon" style="background: var(--success);">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <p>مقارنة الميزانية المعتمدة مع المصروفات الفعلية</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;">إنشاء التقرير</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">تقرير التدفق النقدي</h3>
+                                <div class="card-icon" style="background: var(--warning);">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <p>تحليل التدفقات النقدية الداخلة والخارجة</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;">إنشاء التقرير</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">تقرير التحليل المالي</h3>
+                                <div class="card-icon" style="background: var(--primary);">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <p>تحليل النسب المالية والمؤشرات</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;">إنشاء التقرير</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- صفحة الإعدادات -->
+                <div class="page" id="settings">
+                    <h1 class="page-title">الإعدادات</h1>
+                    
+                    <div class="form-container">
+                        <h3>إعدادات النظام</h3>
+                        <div class="form-group">
+                            <label for="companyName">اسم الشركة</label>
+                            <input type="text" id="companyName" class="form-control" value="شركة التقنية المتطورة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="currency">العملة</label>
+                            <select id="currency" class="form-control">
+                                <option>ريال سعودي (ر.س)</option>
+                                <option>دولار أمريكي ($)</option>
+                                <option>دينار كويتي (د.ك)</option>
+                                <option>درهم إماراتي (د.إ)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fiscalYear">السنة المالية</label>
+                            <select id="fiscalYear" class="form-control">
+                                <option>يناير - ديسمبر</option>
+                                <option>يوليو - يونيو</option>
+                                <option>أبريل - مارس</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taxRate">معدل الضريبة (%)</label>
+                            <input type="number" id="taxRate" class="form-control" value="15">
+                        </div>
+                        
+                        <button class="btn btn-success">حفظ الإعدادات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // دوال التنقل بين الصفحات
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // إزالة النشاط من جميع الروابط
+                document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // إضافة النشاط للرابط الحالي
+                this.classList.add('active');
+                
+                // إخفاء جميع الصفحات
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // إظهار الصفحة المطلوبة
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+
+        // دوال التبويبات
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                const parent = this.closest('.tabs').nextElementSibling;
+                
+                // إزالة النشاط من جميع التبويبات
+                this.parentElement.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // إضافة النشاط للتبويب الحالي
+                this.classList.add('active');
+                
+                // إخفاء جميع محتويات التبويبات
+                parent.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // إظهار محتوى التبويب المطلوب
+                parent.querySelector('#' + tabId).classList.add('active');
+            });
+        });
+
+        // دالة إضافة بند في القيد اليومي
+        function addJournalEntry() {
+            const entriesTable = document.getElementById('journalEntries');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>
+                    <select class="form-control">
+                        <option>النقدية</option>
+                        <option>البنك</option>
+                        <option>المبيعات</option>
+                        <option>المشتريات</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" placeholder="وصف البند"></td>
+                <td><input type="number" class="form-control" placeholder="0.00"></td>
+                <td><input type="number" class="form-control" placeholder="0.00"></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">حذف</button></td>
+            `;
+            entriesTable.appendChild(newRow);
+        }
+
+        // دالة حذف بند من القيد اليومي
+        function removeEntry(button) {
+            button.closest('tr').remove();
+        }
+
+        // دالة طي/فتح الشريط الجانبي
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            document.getElementById('container').classList.toggle('sidebar-collapsed');
+        });
+
+        // محاكاة الرسوم البيانية
+        window.onload = function() {
+            // محاكاة رسم بياني للإيرادات والمصروفات
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                    datasets: [
+                        {
+                            label: 'الإيرادات',
+                            data: [100000, 110000, 105000, 120000, 115000, 125000, 130000, 135000, 140000, 130000, 125000, 150000],
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            fill: true
+                        },
+                        {
+                            label: 'المصروفات',
+                            data: [80000, 85000, 90000, 95000, 100000, 105000, 110000, 115000, 120000, 115000, 110000, 125000],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            rtl: true
+                        }
+                    }
+                }
+            });
+
+            // محاكاة رسم بياني للميزانية
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            const budgetChart = new Chart(budgetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['التسويق', 'التشغيل', 'البحث والتطوير', 'الإدارة'],
+                    datasets: [{
+                        data: [200000, 400000, 300000, 300000],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#f39c12',
+                            '#9b59b6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            rtl: true
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>

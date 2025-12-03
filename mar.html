@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام التسويق المتكامل - MarketingPro</title>
+    <link rel="stylesheet" href="mar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- الرأس -->
+    <header class="m1">
+        <button class="m2" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- معلومات المستخدم على اليمين -->
+        <div class="m4">
+            <!-- معلومات المستخدم الرئيسية -->
+            <div class="m5">
+                <div class="m6">
+                    <div class="m7">
+                        <img src="https://via.placeholder.com/60" alt="صورة المسوق" id="m8">
+                    </div>
+                    <div class="m9">
+                        <div class="m10">مسوق محترف</div>
+                        <div class="m11" id="m12">مرحبا، أحمد</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- المركز - الإصدار والنظام -->
+        <div class="m13">
+            <div class="m14">
+                <span class="m15"> DMT/V1.0</span>
+                <span class="m16"> شركة التقنية المتطورة
+ </span>
+            </div>
+        </div>
+
+        <!-- الساعة وزر الخروج على اليسار -->
+        <div class="m17">
+            <div class="m18" id="m19">
+                <i class="fas fa-clock"></i>
+                <span id="m20">--:--:--</span>
+            </div>
+            
+            <!-- زر تسجيل الخروج -->
+            <button class="m21 m22 m23" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                تسجيل الخروج
+            </button>
+        </div>
+    </header>
+
+    <!-- زر فتح الشريط الأيسر -->
+    <button class="m24" onclick="toggleLeftSidebar()">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- الشريط الجانبي الأيسر (الإشعارات والشات) -->
+    <aside class="m25" id="m26">
+        <div class="m27">
+            <button class="m28" onclick="closeLeftSidebar()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h4>التواصل والإشعارات</h4>
+            <div class="m29">
+                <button class="m30" onclick="minimizeLeftSidebar()">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="m30" onclick="toggleLeftSidebarExpand()">
+                    <i class="fas fa-expand" id="m31"></i>
+                </button>
+                <button class="m30" onclick="closeLeftSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="m32">
+            <button class="m33 active" onclick="switchLeftTab('notifications')">
+                <i class="fas fa-bell"></i>
+                <span>الإشعارات</span>
+            </button>
+            <button class="m33" onclick="switchLeftTab('chat')">
+                <i class="fas fa-comments"></i>
+                <span>المحادثات</span>
+            </button>
+            <button class="m33" onclick="switchLeftTab('tasks')">
+                <i class="fas fa-tasks"></i>
+                <span>المهام</span>
+            </button>
+        </div>
+
+        <!-- قسم الإشعارات -->
+        <div id="notificationsTab" class="m35 active">
+            <div class="m36">
+                <h4>إشعارات التسويق</h4>
+                <button class="m21 m37" onclick="markAllAsRead()">تحديد الكل كمقروء</button>
+            </div>
+            <div class="m38" id="m39">
+                <div class="m40 m41">
+                    <div class="m42">حملة عاجلة</div>
+                    <div class="m43">يجب إطلاق الحملة الإعلانية الجديدة قبل نهاية اليوم</div>
+                    <div class="m44">10:30</div>
+                </div>
+                <div class="m40 m41">
+                    <div class="m42">تحليل البيانات</div>
+                    <div class="m43">تقرير أداء الحملات الشهري جاهز للمراجعة</div>
+                    <div class="m44">09:15</div>
+                </div>
+                <div class="m40">
+                    <div class="m42">تحديث المنصة</div>
+                    <div class="m43">تم إضافة ميزات جديدة لإدارة وسائل التواصل الاجتماعي</div>
+                    <div class="m44">أمس</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم المحادثات -->
+        <div id="chatTab" class="m35">
+            <div class="m46">
+                <div class="m47">
+                    <div class="m48">
+                        <h5>فريق التسويق</h5>
+                        <div class="m49 m50" onclick="openChat('management')">
+                            <div class="m51">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="m52">
+                                <div class="m53">مدير التسويق</div>
+                                <div class="m54">متصل</div>
+                            </div>
+                            <div class="m55">3</div>
+                        </div>
+                        <div class="m49" onclick="openChat('socialMediaTeam')">
+                            <div class="m51">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="m52">
+                                <div class="m53">فريق السوشيال ميديا</div>
+                                <div class="m54">4 متصل</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="m48">
+                        <h5>فرق العمل</h5>
+                        <div class="m49" onclick="openChat('contentTeam')">
+                            <div class="m51">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="m52">
+                                <div class="m53">فريق المحتوى</div>
+                                <div class="m54">5 متصل</div>
+                            </div>
+                            <div class="m55">2</div>
+                        </div>
+                        <div class="m49" onclick="openChat('designTeam')">
+                            <div class="m51">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="m52">
+                                <div class="m53">فريق التصميم</div>
+                                <div class="m54">3 متصل</div>
+                            </div>
+                        </div>
+                        <div class="m49" onclick="openChat('analyticsTeam')">
+                            <div class="m51">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="m52">
+                                <div class="m53">فريق التحليلات</div>
+                                <div class="m54">2 متصل</div>
+                            </div>
+                            <div class="m55">1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="m56" id="m57">
+                    <div class="m58">
+                        <i class="fas fa-comments"></i>
+                        <p>اختر محادثة لبدء الدردشة</p>
+                    </div>
+                    
+                    <div class="m59" style="display: none;">
+                        <div class="m60">
+                            <div class="m61">
+                                <div class="m51">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="m62">
+                                    <div class="m53" id="m63">مدير التسويق</div>
+                                    <div class="m54">متصل</div>
+                                </div>
+                            </div>
+                            <div class="m64">
+                                <button class="m21 m37" onclick="toggleChatFullscreen()">
+                                    <i class="fas fa-expand" id="m65"></i>
+                                </button>
+                                <button class="m21 m37" onclick="closeActiveChat()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="m66" id="m67">
+                            <!-- الرسائل تظهر هنا -->
+                        </div>
+                        
+                        <div class="m68">
+                            <input type="text" id="m69" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key === 'Enter') sendActiveChatMessage()">
+                            <button class="m21" onclick="sendActiveChatMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم المهام -->
+        <div id="tasksTab" class="m35">
+            <div class="m71">
+                <div class="m72">
+                    <h4>مهام التسويق</h4>
+                    <button class="m21 m37" onclick="showAddTaskModal()">إضافة مهمة</button>
+                </div>
+                
+                <div class="m73">
+                    <div class="m74">
+                        <h5>المهام الحالية</h5>
+                        <div class="m75" id="m76">
+                            <!-- المهام الحالية تظهر هنا -->
+                        </div>
+                    </div>
+                    
+                    <div class="m74">
+                        <h5>المهام القادمة</h5>
+                        <div class="m75" id="m77">
+                            <!-- المهام القادمة تظهر هنا -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- الشريط الجانبي الأيمن للمهام -->
+    <aside class="m78" id="m79">
+        <ul class="m80">
+            <li><a href="#" class="active" onclick="showTab('dashboard')"><i class="fas fa-tachometer-alt"></i> <span>لوحة التحكم</span></a></li>
+            <li><a href="#" onclick="showTab('socialMedia')"><i class="fas fa-hashtag"></i> <span>وسائل التواصل</span></a></li>
+            <li><a href="#" onclick="showTab('emailMarketing')"><i class="fas fa-envelope"></i> <span>التسويق بالبريد</span></a></li>
+            <li><a href="#" onclick="showTab('analytics')"><i class="fas fa-chart-bar"></i> <span>التحليلات</span></a></li>
+            <li><a href="#" onclick="showTab('campaigns')"><i class="fas fa-bullhorn"></i> <span>الحملات الإعلانية</span></a></li>
+            <li><a href="#" onclick="showTab('crm')"><i class="fas fa-users"></i> <span>إدارة العملاء</span></a></li>
+            <li><a href="#" onclick="showTab('seo')"><i class="fas fa-search"></i> <span>تحسين محركات البحث</span></a></li>
+            <li><a href="#" onclick="showTab('content')"><i class="fas fa-edit"></i> <span>إدارة المحتوى</span></a></li>
+            <li><a href="#" onclick="showTab('reports')"><i class="fas fa-file-alt"></i> <span>التقارير</span></a></li>
+            <li><a href="#" onclick="toggleCalendar()"><i class="fas fa-calendar-alt"></i> <span>التقويم</span></a></li>
+        </ul>
+        
+        <!-- التقويم الصغير بنهايه شريط المهام -->
+        <div class="m81">
+            <div class="m82">
+                <div class="m83">
+                    <button onclick="toggleCalendar()">
+                        <span id="m84">ديسمبر 2024</span>
+                        <i class="fas fa-calendar"></i>
+                    </button>
+                </div>
+                <div class="m85" id="m86">
+                    <!-- أيام التقويم تظهر هنا -->
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="m87" id="m88">
+        <!-- لوحة التحكم -->
+        <div id="dashboard" class="m89 active">
+            <!-- العنوان الجديد تحت الهيدر -->
+            <div class="m90">
+                <div class="m91">
+                    <div class="m92">
+                        <div class="m93" id="m94">أحمد محمد علي</div>
+                        <div class="m95">الرقم الوظيفي: <span id="m96">MARK-001</span></div>
+                    </div>
+                    <h1 class="m97">لوحة تحكم نظام التسويق المتكامل</h1>
+                    <div class="m98" id="m99">الجمعة، ١ يناير ٢٠٢٤</div>
+                </div>
+            </div>
+
+            <!-- البطاقات الإحصائية -->
+            <div class="m100">
+                <div class="mm1 mm2">
+                    <h3>الحملات النشطة</h3>
+                    <div class="mm3" id="mm4">8</div>
+                    <div class="mm5">حملة</div>
+                </div>
+                <div class="mm1 mm6">
+                    <h3>معدل التفاعل</h3>
+                    <div class="mm3" id="mm7">4.2%</div>
+                    <div class="mm5">زيادة هذا الشهر</div>
+                </div>
+                <div class="mm1 mm8">
+                    <h3>العملاء الجدد</h3>
+                    <div class="mm3" id="mm9">156</div>
+                    <div class="mm5">عميل</div>
+                </div>
+                <div class="mm1 mm10">
+                    <h3>العائد على الاستثمار</h3>
+                    <div class="mm3" id="mm11">320%</div>
+                    <div class="mm5">ROI</div>
+                </div>
+            </div>
+
+            <!-- الرسوم البيانية -->
+            <div class="mm12">
+                <div class="mm13">
+                    <h3>أداء منصات التواصل الاجتماعي</h3>
+                    <canvas id="mm14"></canvas>
+                </div>
+                <div class="mm13">
+                    <h3>تحليل الحملات الشهري</h3>
+                    <canvas id="mm15"></canvas>
+                </div>
+            </div>
+
+            <!-- آخر الحملات -->
+            <div class="mm16">
+                <div class="mm17">
+                    <h3>آخر الحملات</h3>
+                    <button class="m21" onclick="showTab('campaigns')">عرض الكل</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الحملة</th>
+                            <th>النوع</th>
+                            <th>الميزانية</th>
+                            <th>الحالة</th>
+                            <th>النتائج</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mm18">
+                        <tr>
+                            <td>حملة الصيف 2024</td>
+                            <td>وسائل تواصل</td>
+                            <td>5,000 ر.س</td>
+                            <td><span class="mm19">نشطة</span></td>
+                            <td>+2.4K تفاعل</td>
+                        </tr>
+                        <tr>
+                            <td>عروض التخفيض</td>
+                            <td>بريد إلكتروني</td>
+                            <td>2,000 ر.س</td>
+                            <td><span class="status-completed">مكتملة</span></td>
+                            <td>15% تحويل</td>
+                        </tr>
+                        <tr>
+                            <td>إعلانات جوجل</td>
+                            <td>إعلانات مدفوعة</td>
+                            <td>8,000 ر.س</td>
+                            <td><span class="status-inprogress">قيد التشغيل</span></td>
+                            <td>+500 زائر/يوم</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- إدارة وسائل التواصل الاجتماعي -->
+        <div id="socialMedia" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">إدارة وسائل التواصل الاجتماعي</h1>
+                <div class="m98" id="mm20">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+
+            <div class="mm28">
+                <div class="mm29" onclick="openCampaignDetails('social1')">
+                    <div class="mm30">
+                        <h4>حملة فيسبوك - منتج جديد</h4>
+                        <span class="mm31 mm32">نشطة</span>
+                    </div>
+                    <p>حملة لإطلاق المنتج الجديد على منصة فيسبوك</p>
+                    <div class="mm33">
+                        <span class="mm34">📱 فيسبوك</span>
+                        <span class="mm34">🎯 مستهدف</span>
+                        <span class="mm34">💰 3,000 ر.س</span>
+                    </div>
+                    <div class="mm35">
+                        <span class="mm36">👤 أحمد (منشئ)</span>
+                        <span class="mm36">👤 سارة (مصمم)</span>
+                        <span class="mm36">👤 محمد (محلل)</span>
+                    </div>
+                    <div class="mm37">
+                        <div class="mm38">
+                            <div class="mm39" style="width: 75%"></div>
+                        </div>
+                        <span>75%</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="event.stopPropagation(); viewCampaignReport('social1')">عرض التقرير</button>
+                        <button class="m21 m37 mm21" onclick="event.stopPropagation(); schedulePost('social1')">جدولة منشور</button>
+                    </div>
+                </div>
+
+                <div class="mm29" onclick="openCampaignDetails('social2')">
+                    <div class="mm30">
+                        <h4>إنستغرام - العلامة التجارية</h4>
+                        <span class="mm31 mm41">قيد المراجعة</span>
+                    </div>
+                    <p>تعزيز الوعي بالعلامة التجارية على إنستغرام</p>
+                    <div class="mm33">
+                        <span class="mm34">📸 إنستغرام</span>
+                        <span class="mm34">🔄 ريels</span>
+                        <span class="mm34">💰 2,500 ر.س</span>
+                    </div>
+                    <div class="mm35">
+                        <span class="mm36">👤 ليان (منشئ)</span>
+                        <span class="mm36">👤 خالد (مصمم)</span>
+                    </div>
+                    <div class="mm37">
+                        <div class="mm38">
+                            <div class="mm39" style="width: 40%"></div>
+                        </div>
+                        <span>40%</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="event.stopPropagation(); viewCampaignReport('social2')">عرض التقرير</button>
+                        <button class="m21 m37 mm21" onclick="event.stopPropagation(); schedulePost('social2')">جدولة منشور</button>
+                    </div>
+                </div>
+
+                <div class="mm29" onclick="openCampaignDetails('social3')">
+                    <div class="mm30">
+                        <h4>تويتر - تفاعل المجتمع</h4>
+                        <span class="mm31 mm32">نشطة</span>
+                    </div>
+                    <p>بناء مجتمع تفاعلي على تويتر</p>
+                    <div class="mm33">
+                        <span class="mm34">🐦 تويتر</span>
+                        <span class="mm34">💬 تفاعل</span>
+                        <span class="mm34">💰 1,500 ر.س</span>
+                    </div>
+                    <div class="mm35">
+                        <span class="mm36">👤 ياسر (منشئ)</span>
+                        <span class="mm36">👤 نور (محلل)</span>
+                    </div>
+                    <div class="mm37">
+                        <div class="mm38">
+                            <div class="mm39" style="width: 60%"></div>
+                        </div>
+                        <span>60%</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="event.stopPropagation(); viewCampaignReport('social3')">عرض التقرير</button>
+                        <button class="m21 m37 mm21" onclick="event.stopPropagation(); schedulePost('social3')">جدولة منشور</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التسويق بالبريد الإلكتروني -->
+        <div id="emailMarketing" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">التسويق بالبريد الإلكتروني</h1>
+                <div class="m98" id="mm25">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+
+            <div class="mm28">
+                <div class="mm29" onclick="openCampaignDetails('email1')">
+                    <div class="mm30">
+                        <h4>نشرة إخبارية أسبوعية</h4>
+                        <span class="mm31 mm32">نشطة</span>
+                    </div>
+                    <p>نشرة إخبارية أسبوعية للمشتركين</p>
+                    <div class="mm33">
+                        <span class="mm34">📧 5,000 مشترك</span>
+                        <span class="mm34">📊 25% فتح</span>
+                        <span class="mm34">🔄 أسبوعي</span>
+                    </div>
+                    <div class="mm35">
+                        <span class="mm36">👤 أحمد (كاتب)</span>
+                        <span class="mm36">👤 سارة (مصمم)</span>
+                    </div>
+                    <div class="mm37">
+                        <div class="mm38">
+                            <div class="mm39" style="width: 90%"></div>
+                        </div>
+                        <span>90%</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="event.stopPropagation(); viewEmailStats('email1')">إحصائيات</button>
+                        <button class="m21 m37 mm21" onclick="event.stopPropagation(); createEmailCampaign()">إنشاء حملة</button>
+                    </div>
+                </div>
+
+                <div class="mm29" onclick="openCampaignDetails('email2')">
+                    <div class="mm30">
+                        <h4>سلسلة ترحيب بالعملاء الجدد</h4>
+                        <span class="mm31 mm32">نشطة</span>
+                    </div>
+                    <p>سلسلة بريدية ترحيبية للعملاء الجدد</p>
+                    <div class="mm33">
+                        <span class="mm34">📧 3 رسائل</span>
+                        <span class="mm34">🎯 عملاء جدد</span>
+                        <span class="mm34">⏱ تلقائي</span>
+                    </div>
+                    <div class="mm35">
+                        <span class="mm36">👤 محمد (كاتب)</span>
+                        <span class="mm36">👤 ليان (مصمم)</span>
+                    </div>
+                    <div class="mm37">
+                        <div class="mm38">
+                            <div class="mm39" style="width: 100%"></div>
+                        </div>
+                        <span>100%</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="event.stopPropagation(); viewEmailStats('email2')">إحصائيات</button>
+                        <button class="m21 m37 mm21" onclick="event.stopPropagation(); createEmailCampaign()">إنشاء حملة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التحليلات -->
+        <div id="analytics" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">تحليلات التسويق</h1>
+                <div class="m98" id="mm26">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+
+            <div class="mm45">
+                <div class="mm46 active" onclick="showReportTab('performance')">أداء الحملات</div>
+                <div class="mm46" onclick="showReportTab('audience')">الجمهور</div>
+                <div class="mm46" onclick="showReportTab('conversion')">التحويلات</div>
+            </div>
+            
+            <div id="performance" class="mm47">
+                <h3>تقرير أداء الحملات</h3>
+                <div class="mm48">
+                    <div class="mm49">
+                        <h4>معدل التفاعل</h4>
+                        <div class="mm50">4.2%</div>
+                        <div class="mm51">+0.8% عن الشهر الماضي</div>
+                    </div>
+                    <div class="mm49">
+                        <h4>الوصول</h4>
+                        <div class="mm50">125K</div>
+                        <div class="mm51">+25K عن الشهر الماضي</div>
+                    </div>
+                    <div class="mm49">
+                        <h4>نقاط الضغط</h4>
+                        <div class="mm50">2,450</div>
+                        <div class="mm51">+320 عن الشهر الماضي</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="audience" class="mm47" style="display: none;">
+                <h3>تحليل الجمهور</h3>
+                <p>تحليل ديموغرافي وتفصيلي للجمهور المستهدف - قيد التطوير</p>
+            </div>
+            
+            <div id="conversion" class="mm47" style="display: none;">
+                <h3>تحليل التحويلات</h3>
+                <p>تحليل مسارات التحويل ومعدلات التحويل - قيد التطوير</p>
+            </div>
+        </div>
+
+        <!-- الحملات الإعلانية -->
+        <div id="campaigns" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">إدارة الحملات الإعلانية</h1>
+                <div class="m98" id="mm27">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+
+            <div class="mm16">
+                <div class="mm17">
+                    <h3>جميع الحملات</h3>
+                    <div>
+                        <button class="m21" onclick="loadCampaigns()">تحديث</button>
+                        <button class="m21 mm21" onclick="showAddCampaignModal()">إضافة حملة</button>
+                        <button class="m21 mm21" onclick="exportCampaigns()">تصدير</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الحملة</th>
+                            <th>النوع</th>
+                            <th>الميزانية</th>
+                            <th>المنصة</th>
+                            <th>الحالة</th>
+                            <th>تاريخ البدء</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mm52">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- إدارة العملاء (CRM) -->
+        <div id="crm" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">إدارة علاقات العملاء</h1>
+                <div class="m98" id="mm43">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+            <div class="mm24">
+                <p>نظام متكامل لإدارة علاقات العملاء وتتبع التفاعلات - قيد التطوير</p>
+            </div>
+        </div>
+
+        <!-- تحسين محركات البحث -->
+        <div id="seo" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">تحسين محركات البحث</h1>
+                <div class="m98" id="mm44">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+            
+            <div class="mm28">
+                <div class="mm29">
+                    <div class="mm30">
+                        <h4>تحليل الكلمات المفتاحية</h4>
+                        <span class="mm31 mm32">نشط</span>
+                    </div>
+                    <p>تحليل وتتبع أداء الكلمات المفتاحية</p>
+                    <div class="mm33">
+                        <span class="mm34">🔍 250 كلمة</span>
+                        <span class="mm34">📈 15% نمو</span>
+                        <span class="mm34">🎯 منافسة متوسطة</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="analyzeKeywords()">تحليل الكلمات</button>
+                        <button class="m21 m37 mm21" onclick="trackRankings()">تتبع الترتيب</button>
+                    </div>
+                </div>
+
+                <div class="mm29">
+                    <div class="mm30">
+                        <h4>تحليل المنافسين</h4>
+                        <span class="mm31 mm32">نشط</span>
+                    </div>
+                    <p>مراقبة وتحليل استراتيجيات المنافسين</p>
+                    <div class="mm33">
+                        <span class="mm34">👥 8 منافسين</span>
+                        <span class="mm34">📊 تقارير أسبوعية</span>
+                        <span class="mm34">🎯 تحليل تلقائي</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="analyzeCompetitors()">تحليل المنافسين</button>
+                        <button class="m21 m37 mm21" onclick="generateSEORreport()">تقرير SEO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- إدارة المحتوى -->
+        <div id="content" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">إدارة المحتوى</h1>
+                <div class="m98" id="mm53">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+
+            <div class="mm28">
+                <div class="mm29">
+                    <div class="mm30">
+                        <h4>تقويم المحتوى</h4>
+                        <span class="mm31 mm32">نشط</span>
+                    </div>
+                    <p>جدولة ونشر المحتوى على جميع المنصات</p>
+                    <div class="mm33">
+                        <span class="mm34">📅 45 منشور</span>
+                        <span class="mm34">🔄 نشر تلقائي</span>
+                        <span class="mm34">📱 6 منصات</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="viewContentCalendar()">عرض التقويم</button>
+                        <button class="m21 m37 mm21" onclick="scheduleContent()">جدولة محتوى</button>
+                    </div>
+                </div>
+
+                <div class="mm29">
+                    <div class="mm30">
+                        <h4>إدارة المدونة</h4>
+                        <span class="mm31 mm32">نشط</span>
+                    </div>
+                    <p>إنشاء وإدارة محتوى المدونة</p>
+                    <div class="mm33">
+                        <span class="mm34">✍️ 12 مقال</span>
+                        <span class="mm34">📈 5K زائر</span>
+                        <span class="mm34">🎯 تحسين محركات</span>
+                    </div>
+                    <div class="mm40">
+                        <button class="m21 m37" onclick="manageBlog()">إدارة المدونة</button>
+                        <button class="m21 m37 mm21" onclick="createArticle()">مقال جديد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التقارير -->
+        <div id="reports" class="m89" style="display: none;">
+            <div class="m90">
+                <h1 class="m97">التقارير الشاملة</h1>
+                <div class="m98" id="mm54">الجمعة، ١ يناير ٢٠٢٤</div>
+            </div>
+            
+            <div class="mm45">
+                <div class="mm46 active" onclick="showReportTab('comprehensive')">التقرير الشامل</div>
+                <div class="mm46" onclick="showReportTab('monthly')">تقرير شهري</div>
+                <div class="mm46" onclick="showReportTab('custom')">تقرير مخصص</div>
+            </div>
+            
+            <div id="comprehensive" class="mm47">
+                <h3>التقرير الشامل لأداء التسويق</h3>
+                <div class="mm55">
+                    <div class="mm56">
+                        <h4>ملخص الأداء</h4>
+                        <div class="mm57">
+                            <div class="mm58">
+                                <span class="mm59">إجمالي الميزانية</span>
+                                <span class="mm60">25,000 ر.س</span>
+                            </div>
+                            <div class="mm58">
+                                <span class="mm59">العائد على الاستثمار</span>
+                                <span class="mm60">320%</span>
+                            </div>
+                            <div class="mm58">
+                                <span class="mm59">العملاء الجدد</span>
+                                <span class="mm60">156 عميل</span>
+                            </div>
+                            <div class="mm58">
+                                <span class="mm59">معدل التحويل</span>
+                                <span class="mm60">4.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mm56">
+                        <h4>أداء المنصات</h4>
+                        <div class="mm57">
+                            <div class="mm58">
+                                <span class="mm59">فيسبوك</span>
+                                <span class="mm60">45% تفاعل</span>
+                            </div>
+                            <div class="mm58">
+                                <span class="mm59">إنستغرام</span>
+                                <span class="mm60">30% تفاعل</span>
+                            </div>
+                            <div class="mm58">
+                                <span class="mm59">البريد الإلكتروني</span>
+                                <span class="mm60">25% فتح</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="monthly" class="mm47" style="display: none;">
+                <h3>التقرير الشهري</h3>
+                <p>تقرير أداء التسويق الشهري - قيد التطوير</p>
+            </div>
+            
+            <div id="custom" class="mm47" style="display: none;">
+                <h3>التقارير المخصصة</h3>
+                <p>إنشاء تقارير مخصصة حسب احتياجاتك - قيد التطوير</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة التقويم الموسع -->
+    <div class="mm61" id="mm62" style="display: none;">
+        <div class="mm63">
+            <div class="mm64">
+                <h3>تقويم التسويق</h3>
+                <div>
+                    <button class="m21" onclick="changeMonth(-1)"><i class="fas fa-chevron-right"></i> الشهر السابق</button>
+                    <span id="mm65">ديسمبر 2024</span>
+                    <button class="m21" onclick="changeMonth(1)">الشهر التالي <i class="fas fa-chevron-left"></i></button>
+                    <button class="m21 m22" onclick="toggleCalendar()">إغلاق</button>
+                </div>
+            </div>
+            
+            <div class="mm66">
+                <div class="mm67" id="mm68">
+                    <div class="mm69">
+                        <h5>مهام التسويق</h5>
+                        <button class="m21 m37" onclick="showAddTaskModal()">إضافة مهمة</button>
+                    </div>
+                    <p>اختر تاريخاً لعرض المهام</p>
+                </div>
+                
+                <div class="mm70">
+                    <div class="mm71">
+                        <h4>تقويم الحملات</h4>
+                    </div>
+                    <div class="mm72" id="mm73">
+                        <!-- التقويم الموسع يظهر هنا -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة حملة -->
+    <div class="mm74" id="mm75" style="display: none;">
+        <div class="mm76">
+            <div class="mm77">
+                <h3>إضافة حملة تسويقية جديدة</h3>
+                <button onclick="closeModal('mm75')">&times;</button>
+            </div>
+            <div class="mm78">
+                <div class="mm79">
+                    <div class="mm80">
+                        <label for="mm81">اسم الحملة</label>
+                        <input type="text" id="mm81" class="mm82" placeholder="أدخل اسم الحملة">
+                    </div>
+                    <div class="mm80">
+                        <label for="mm83">نوع الحملة</label>
+                        <select id="mm83" class="mm82">
+                            <option value="">اختر النوع</option>
+                            <option value="وسائل تواصل">وسائل تواصل اجتماعي</option>
+                            <option value="بريد إلكتروني">بريد إلكتروني</option>
+                            <option value="إعلانات مدفوعة">إعلانات مدفوعة</option>
+                            <option value="تحسين محركات">تحسين محركات البحث</option>
+                            <option value="محتوى">تسويق بالمحتوى</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mm79">
+                    <div class="mm80">
+                        <label for="mm84">المنصة</label>
+                        <select id="mm84" class="mm82">
+                            <option value="">اختر المنصة</option>
+                            <option value="فيسبوك">فيسبوك</option>
+                            <option value="إنستغرام">إنستغرام</option>
+                            <option value="تويتر">تويتر</option>
+                            <option value="لينكدإن">لينكدإن</option>
+                            <option value="جوجل">جوجل</option>
+                            <option value="بريد إلكتروني">بريد إلكتروني</option>
+                            <option value="موقع ويب">موقع ويب</option>
+                        </select>
+                    </div>
+                    <div class="mm80">
+                        <label for="mm85">حالة الحملة</label>
+                        <select id="mm85" class="mm82">
+                            <option value="">اختر الحالة</option>
+                            <option value="مخطط">مخطط</option>
+                            <option value="نشطة">نشطة</option>
+                            <option value="قيد المراجعة">قيد المراجعة</option>
+                            <option value="مكتملة">مكتملة</option>
+                            <option value="موقوفة">موقوفة</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mm79">
+                    <div class="mm80">
+                        <label for="mm86">تاريخ البدء</label>
+                        <input type="date" id="mm86" class="mm82">
+                    </div>
+                    <div class="mm80">
+                        <label for="mm87">الميزانية</label>
+                        <input type="number" id="mm87" class="mm82" placeholder="أدخل الميزانية">
+                    </div>
+                </div>
+                
+                <div class="mm80">
+                    <label for="mm88">وصف الحملة</label>
+                    <textarea id="mm88" class="mm82" rows="3" placeholder="أدخل وصف الحملة"></textarea>
+                </div>
+                
+                <div class="mm89">
+                    <button class="m21 mm21" onclick="saveCampaign()">حفظ</button>
+                    <button class="m21 m22" onclick="closeModal('mm75')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="mar.js"></script>
+</body>
+</html>

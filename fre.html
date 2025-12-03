@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الموظفين المتكامل</title>
+    <link rel="stylesheet" href="fre.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- الرأس -->
+    <header class="header">
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1>نظام إدارة الموظفين </h1>
+        <div class="user-info">
+            <span id="userFullName">مرحباً، مدير الموارد البشرية</span>
+            <button class="btn btn-secondary" onclick="logout()">تسجيل الخروج</button>
+        </div>
+    </header>
+
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" onclick="showTab('dashboard')"><i class="fas fa-tachometer-alt"></i> <span>لوحة التحكم</span></a></li>
+            <li><a href="#" onclick="showTab('employees')"><i class="fas fa-users"></i> <span>إدارة الموظفين</span></a></li>
+            <li><a href="#" onclick="showTab('attendance')"><i class="fas fa-calendar-check"></i> <span>الحضور والانصراف</span></a></li>
+            <li><a href="#" onclick="showTab('payroll')"><i class="fas fa-money-bill-wave"></i> <span>كشوف المرتبات</span></a></li>
+            <li><a href="#" onclick="showTab('leaves')"><i class="fas fa-calendar-alt"></i> <span>إدارة الإجازات</span></a></li>
+            <li><a href="#" onclick="showTab('performance')"><i class="fas fa-chart-line"></i> <span>تقييم الأداء</span></a></li>
+            <li><a href="#" onclick="showTab('reports')"><i class="fas fa-chart-bar"></i> <span>التقارير</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- لوحة التحكم -->
+        <div id="dashboard" class="tab-content active">
+            <div class="page-title">
+                <h2>لوحة تحكم الموارد البشرية</h2>
+                <span id="currentDate"></span>
+            </div>
+
+            <!-- البطاقات الإحصائية -->
+            <div class="stats-cards">
+                <div class="stat-card total-employees">
+                    <h3>إجمالي الموظفين</h3>
+                    <div class="value" id="totalEmployees">0</div>
+                    <div class="change positive">+5% عن الشهر الماضي</div>
+                </div>
+                <div class="stat-card present-today">
+                    <h3>الحاضرون اليوم</h3>
+                    <div class="value" id="presentToday">0</div>
+                    <div class="change positive">+3% عن الأمس</div>
+                </div>
+                <div class="stat-card leaves">
+                    <h3>الإجازات الحالية</h3>
+                    <div class="value" id="currentLeaves">0</div>
+                    <div class="change negative">-2% عن الأسبوع الماضي</div>
+                </div>
+                <div class="stat-card payroll">
+                    <h3>إجمالي الرواتب</h3>
+                    <div class="value" id="totalPayroll">0.00</div>
+                    <div class="currency">ريال سعودي</div>
+                </div>
+            </div>
+
+            <!-- الرسوم البيانية -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>توزيع الموظفين حسب الإدارات</h3>
+                    <canvas id="departmentsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>نسبة الحضور الشهرية</h3>
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- الموظفون الجدد -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>أحدث الموظفين</h3>
+                    <button class="btn" onclick="showTab('employees')">عرض الكل</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>القسم</th>
+                            <th>الوظيفة</th>
+                            <th>تاريخ التعيين</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentEmployees">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- الإجازات القادمة -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>الإجازات القادمة</h3>
+                    <button class="btn" onclick="showTab('leaves')">عرض الكل</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الموظف</th>
+                            <th>نوع الإجازة</th>
+                            <th>من تاريخ</th>
+                            <th>إلى تاريخ</th>
+                            <th>المدة</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="upcomingLeaves">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- إدارة الموظفين -->
+        <div id="employees" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>إدارة الموظفين</h2>
+                <button class="btn" onclick="showAddEmployeeModal()">إضافة موظف جديد</button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label>القسم:</label>
+                    <select id="departmentFilter" onchange="filterEmployees()">
+                        <option value="">جميع الأقسام</option>
+                        <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
+                        <option value="المبيعات">المبيعات</option>
+                        <option value="التسويق">التسويق</option>
+                        <option value="المالية">المالية</option>
+                        <option value="الموارد البشرية">الموارد البشرية</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>الحالة:</label>
+                    <select id="employeeStatusFilter" onchange="filterEmployees()">
+                        <option value="">جميع الحالات</option>
+                        <option value="نشط">نشط</option>
+                        <option value="إجازة">إجازة</option>
+                        <option value="استقال">استقال</option>
+                        <option value="انهاء خدمة">انهاء خدمة</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>قائمة الموظفين</h3>
+                    <div>
+                        <button class="btn" onclick="loadEmployees()">تحديث</button>
+                        <button class="btn btn-success" onclick="exportEmployees()">تصدير</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>القسم</th>
+                            <th>الوظيفة</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الهاتف</th>
+                            <th>تاريخ التعيين</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeesTable">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- الحضور والانصراف -->
+        <div id="attendance" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>إدارة الحضور والانصراف</h2>
+                <button class="btn" onclick="showAttendanceReport()">تقرير الحضور</button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label>التاريخ:</label>
+                    <input type="date" id="attendanceDate" onchange="loadAttendance()" value="">
+                </div>
+                <div class="filter-group">
+                    <label>القسم:</label>
+                    <select id="attendanceDepartmentFilter" onchange="loadAttendance()">
+                        <option value="">جميع الأقسام</option>
+                        <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
+                        <option value="المبيعات">المبيعات</option>
+                        <option value="التسويق">التسويق</option>
+                        <option value="المالية">المالية</option>
+                        <option value="الموارد البشرية">الموارد البشرية</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>سجل الحضور والانصراف</h3>
+                    <div>
+                        <button class="btn" onclick="loadAttendance()">تحديث</button>
+                        <button class="btn btn-success" onclick="exportAttendance()">تصدير</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الموظف</th>
+                            <th>القسم</th>
+                            <th>وقت الحضور</th>
+                            <th>وقت الانصراف</th>
+                            <th>ساعات العمل</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTable">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- كشوف المرتبات -->
+        <div id="payroll" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>إدارة كشوف المرتبات</h2>
+                <button class="btn" onclick="showPayrollReport()">تقرير الرواتب</button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label>الشهر:</label>
+                    <input type="month" id="payrollMonth" onchange="loadPayroll()" value="">
+                </div>
+                <div class="filter-group">
+                    <label>الحالة:</label>
+                    <select id="payrollStatusFilter" onchange="loadPayroll()">
+                        <option value="">جميع الحالات</option>
+                        <option value="مسدد">مسدد</option>
+                        <option value="معلق">معلق</option>
+                        <option value="ملغي">ملغي</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>كشوف المرتبات</h3>
+                    <div>
+                        <button class="btn" onclick="loadPayroll()">تحديث</button>
+                        <button class="btn btn-success" onclick="exportPayroll()">تصدير</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الموظف</th>
+                            <th>القسم</th>
+                            <th>الراتب الأساسي</th>
+                            <th>البدلات</th>
+                            <th>الخصومات</th>
+                            <th>صافي الراتب</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payrollTable">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- إدارة الإجازات -->
+        <div id="leaves" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>إدارة الإجازات</h2>
+                <button class="btn" onclick="showAddLeaveModal()">طلب إجازة</button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label>نوع الإجازة:</label>
+                    <select id="leaveTypeFilter" onchange="filterLeaves()">
+                        <option value="">جميع الأنواع</option>
+                        <option value="سنوية">سنوية</option>
+                        <option value="مرضية">مرضية</option>
+                        <option value="طارئة">طارئة</option>
+                        <option value="أمومة">أمومة</option>
+                        <option value="حج">حج</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>الحالة:</label>
+                    <select id="leaveStatusFilter" onchange="filterLeaves()">
+                        <option value="">جميع الحالات</option>
+                        <option value="معلقة">معلقة</option>
+                        <option value="موافق عليها">موافق عليها</option>
+                        <option value="مرفوضة">مرفوضة</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>طلبات الإجازة</h3>
+                    <div>
+                        <button class="btn" onclick="loadLeaves()">تحديث</button>
+                        <button class="btn btn-success" onclick="exportLeaves()">تصدير</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الموظف</th>
+                            <th>نوع الإجازة</th>
+                            <th>من تاريخ</th>
+                            <th>إلى تاريخ</th>
+                            <th>المدة</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leavesTable">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- باقي التبويبات -->
+        <div id="performance" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>تقييم أداء الموظفين</h2>
+                <button class="btn" onclick="showAddEvaluationModal()">إضافة تقييم</button>
+            </div>
+            <div class="card">
+                <p>واجهة تقييم الأداء - قيد التطوير</p>
+            </div>
+        </div>
+
+        <div id="reports" class="tab-content" style="display: none;">
+            <div class="page-title">
+                <h2>التقارير الإدارية</h2>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="showReportTab('attendanceReports')">تقارير الحضور</div>
+                <div class="tab" onclick="showReportTab('payrollReports')">تقارير الرواتب</div>
+                <div class="tab" onclick="showReportTab('leavesReports')">تقارير الإجازات</div>
+            </div>
+            
+            <div id="attendanceReports" class="report-content">
+                <!-- محتوى تقارير الحضور -->
+            </div>
+            
+            <div id="payrollReports" class="report-content" style="display: none;">
+                <!-- محتوى تقارير الرواتب -->
+            </div>
+            
+            <div id="leavesReports" class="report-content" style="display: none;">
+                <!-- محتوى تقارير الإجازات -->
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة إضافة موظف -->
+    <div class="modal" id="addEmployeeModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة موظف جديد</h3>
+                <button onclick="closeModal('addEmployeeModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeName">الاسم الكامل</label>
+                        <input type="text" id="employeeName" class="form-control" placeholder="أدخل الاسم الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeEmail">البريد الإلكتروني</label>
+                        <input type="email" id="employeeEmail" class="form-control" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeePhone">رقم الهاتف</label>
+                        <input type="tel" id="employeePhone" class="form-control" placeholder="أدخل رقم الهاتف">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeDepartment">القسم</label>
+                        <select id="employeeDepartment" class="form-control">
+                            <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
+                            <option value="المبيعات">المبيعات</option>
+                            <option value="التسويق">التسويق</option>
+                            <option value="المالية">المالية</option>
+                            <option value="الموارد البشرية">الموارد البشرية</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeePosition">الوظيفة</label>
+                        <input type="text" id="employeePosition" class="form-control" placeholder="أدخل المسمى الوظيفي">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeSalary">الراتب الأساسي</label>
+                        <input type="number" id="employeeSalary" class="form-control" placeholder="أدخل الراتب الأساسي">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeHireDate">تاريخ التعيين</label>
+                        <input type="date" id="employeeHireDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeStatus">حالة الموظف</label>
+                        <select id="employeeStatus" class="form-control">
+                            <option value="نشط">نشط</option>
+                            <option value="إجازة">إجازة</option>
+                            <option value="استقال">استقال</option>
+                            <option value="انهاء خدمة">انهاء خدمة</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="employeeNotes">ملاحظات</label>
+                    <textarea id="employeeNotes" class="form-control" rows="3" placeholder="أدخل أي ملاحظات"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-success" onclick="saveEmployee()">حفظ الموظف</button>
+                    <button class="btn btn-secondary" onclick="closeModal('addEmployeeModal')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة طلب إجازة -->
+    <div class="modal" id="addLeaveModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>طلب إجازة جديدة</h3>
+                <button onclick="closeModal('addLeaveModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leaveEmployee">اسم الموظف</label>
+                        <select id="leaveEmployee" class="form-control">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveType">نوع الإجازة</label>
+                        <select id="leaveType" class="form-control">
+                            <option value="سنوية">سنوية</option>
+                            <option value="مرضية">مرضية</option>
+                            <option value="طارئة">طارئة</option>
+                            <option value="أمومة">أمومة</option>
+                            <option value="حج">حج</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leaveStartDate">من تاريخ</label>
+                        <input type="date" id="leaveStartDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveEndDate">إلى تاريخ</label>
+                        <input type="date" id="leaveEndDate" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leaveReason">سبب الإجازة</label>
+                    <textarea id="leaveReason" class="form-control" rows="3" placeholder="أدخل سبب الإجازة"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-success" onclick="saveLeave()">حفظ طلب الإجازة</button>
+                    <button class="btn btn-secondary" onclick="closeModal('addLeaveModal')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="fre.js"></script>
+</body>
+</html>

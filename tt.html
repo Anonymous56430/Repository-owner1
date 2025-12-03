@@ -1,0 +1,1699 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة التطوير - قسم التطوير</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* التصميم العام */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            margin-left: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .logo h1 {
+            font-size: 1.3rem;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-links i {
+            margin-left: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header h2 {
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+        }
+
+        /* الأقسام */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* بطاقات الإحصائيات */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-info .number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* الشبكات والعناصر */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            padding: 1rem 1.5rem;
+            background: var(--light);
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* الأزرار */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn i {
+            margin-left: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* الجداول */
+        .table-container {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        /* مخططات */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* خارطة الطريق */
+        .roadmap-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .roadmap-line {
+            position: absolute;
+            right: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--secondary);
+            transform: translateX(50%);
+        }
+
+        .roadmap-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .roadmap-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .roadmap-content {
+            width: 45%;
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .roadmap-content:hover {
+            transform: scale(1.02);
+        }
+
+        .roadmap-date {
+            position: absolute;
+            right: 50%;
+            transform: translateX(50%);
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* النماذج */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* الحالة */
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-planning {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-progress {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status-delayed {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        /* الأولوية */
+        .priority {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .priority-medium {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .priority-low {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* النماذج المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* قوائم */
+        .list-group {
+            list-style: none;
+        }
+
+        .list-group-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+
+        /* شريط التقدم */
+        .progress {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        /* التبويبات الداخلية */
+        .inner-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .inner-tab {
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .inner-tab.active {
+            border-bottom: 2px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .inner-tab-content {
+            display: none;
+        }
+
+        .inner-tab-content.active {
+            display: block;
+        }
+
+        /* التقييم */
+        .rating {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .star {
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star.active {
+            color: #ffc107;
+        }
+
+        /* التنبيهات */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: #388e3c;
+            border: 1px solid #c8e6c9;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+            }
+            
+            .nav-links li {
+                margin-bottom: 0;
+                margin-left: 0.5rem;
+            }
+            
+            .roadmap-content {
+                width: 90%;
+            }
+            
+            .roadmap-line {
+                right: 5%;
+            }
+            
+            .roadmap-date {
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>نظام إدارة التطوير</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                <li><a href="#roadmap" class="nav-link"><i class="fas fa-map-marked-alt"></i> خارطة الطريق</a></li>
+                <li><a href="#projects" class="nav-link"><i class="fas fa-tasks"></i> المشاريع</a></li>
+                <li><a href="#processes" class="nav-link"><i class="fas fa-cogs"></i> توثيق العمليات</a></li>
+                <li><a href="#kpis" class="nav-link"><i class="fas fa-chart-line"></i> مؤشرات الأداء</a></li>
+                <li><a href="#proposals" class="nav-link"><i class="fas fa-lightbulb"></i> المقترحات</a></li>
+                <li><a href="#reports" class="nav-link"><i class="fas fa-chart-pie"></i> التقارير</a></li>
+            </ul>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- رأس الصفحة -->
+            <div class="header">
+                <h2 id="page-title">لوحة التحكم</h2>
+                <div class="user-info">
+                    <span>مدير التطوير</span>
+                    <img src="https://ui-avatars.com/api/?name=مدير+التطوير&background=3498db&color=fff" alt="صورة المستخدم">
+                </div>
+            </div>
+
+            <!-- لوحة التحكم -->
+            <div id="dashboard" class="section active">
+                <div class="stats-container">
+                    <div class="stat-card" onclick="showSection('projects')">
+                        <div class="stat-icon" style="background: #e3f2fd;">
+                            <i class="fas fa-tasks" style="color: #1976d2;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>المشاريع النشطة</h3>
+                            <div class="number" id="activeProjectsCount">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showSection('kpis')">
+                        <div class="stat-icon" style="background: #e8f5e9;">
+                            <i class="fas fa-chart-line" style="color: #388e3c;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>معدل الإنجاز</h3>
+                            <div class="number" id="completionRate">0%</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showSection('projects')">
+                        <div class="stat-icon" style="background: #fff3e0;">
+                            <i class="fas fa-money-bill-wave" style="color: #f57c00;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>الميزانية المستخدمة</h3>
+                            <div class="number" id="budgetUsed">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showSection('proposals')">
+                        <div class="stat-icon" style="background: #fce4ec;">
+                            <i class="fas fa-lightbulb" style="color: #c2185b;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>المقترحات الجديدة</h3>
+                            <div class="number" id="newProposalsCount">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>مشاريع التطوير حسب الحالة</h3>
+                        <canvas id="projectsChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>مؤشرات الأداء الرئيسية</h3>
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>المشاريع العاجلة</h3>
+                            <span class="priority priority-high">عالية</span>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group" id="urgentProjectsList">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>أحدث المقترحات</h3>
+                            <button class="btn btn-primary btn-sm" onclick="showSection('proposals')">عرض الكل</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group" id="recentProposalsList">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- خارطة الطريق -->
+            <div id="roadmap" class="section">
+                <div class="header">
+                    <h2>خارطة الطريق التطويرية</h2>
+                    <button class="btn btn-primary" onclick="openRoadmapModal()"><i class="fas fa-plus"></i> إضافة مرحلة</button>
+                </div>
+
+                <div class="inner-tabs">
+                    <div class="inner-tab active" data-tab="short">قصيرة المدى</div>
+                    <div class="inner-tab" data-tab="medium">متوسطة المدى</div>
+                    <div class="inner-tab" data-tab="long">طويلة المدى</div>
+                </div>
+
+                <div class="inner-tab-content active" id="short-tab">
+                    <div class="roadmap-container" id="shortRoadmap">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                </div>
+                <div class="inner-tab-content" id="medium-tab">
+                    <div class="roadmap-container" id="mediumRoadmap">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                </div>
+                <div class="inner-tab-content" id="long-tab">
+                    <div class="roadmap-container" id="longRoadmap">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- المشاريع -->
+            <div id="projects" class="section">
+                <div class="header">
+                    <h2>إدارة المشاريع</h2>
+                    <button class="btn btn-primary" onclick="openProjectModal()"><i class="fas fa-plus"></i> مشروع جديد</button>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="current">المشاريع الحالية</div>
+                    <div class="tab" data-tab="upcoming">المشاريع القادمة</div>
+                    <div class="tab" data-tab="completed">المشاريع المنتهية</div>
+                </div>
+
+                <div class="tab-content active" id="current-tab">
+                    <div class="table-container">
+                        <table id="currentProjectsTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم المشروع</th>
+                                    <th>المسؤول</th>
+                                    <th>تاريخ البدء</th>
+                                    <th>تاريخ الانتهاء</th>
+                                    <th>الميزانية</th>
+                                    <th>الحالة</th>
+                                    <th>الأولوية</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="upcoming-tab">
+                    <div class="table-container">
+                        <table id="upcomingProjectsTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم المشروع</th>
+                                    <th>المسؤول</th>
+                                    <th>تاريخ البدء</th>
+                                    <th>تاريخ الانتهاء</th>
+                                    <th>الميزانية</th>
+                                    <th>الحالة</th>
+                                    <th>الأولوية</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="completed-tab">
+                    <div class="table-container">
+                        <table id="completedProjectsTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم المشروع</th>
+                                    <th>المسؤول</th>
+                                    <th>تاريخ البدء</th>
+                                    <th>تاريخ الانتهاء</th>
+                                    <th>الميزانية</th>
+                                    <th>الحالة</th>
+                                    <th>التقييم</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- توثيق العمليات -->
+            <div id="processes" class="section">
+                <div class="header">
+                    <h2>توثيق العمليات</h2>
+                    <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> إضافة عملية</button>
+                </div>
+
+                <div class="inner-tabs">
+                    <div class="inner-tab active" data-tab="workflows">سير العمل</div>
+                    <div class="inner-tab" data-tab="bottlenecks">نقاط الاختناق</div>
+                    <div class="inner-tab" data-tab="solutions">الحلول المقترحة</div>
+                </div>
+
+                <div class="inner-tab-content active" id="workflows-tab">
+                    <div class="table-container">
+                        <table id="workflowsTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم العملية</th>
+                                    <th>القسم</th>
+                                    <th>مراحل العملية</th>
+                                    <th>المسؤول</th>
+                                    <th>تاريخ التحديث</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="inner-tab-content" id="bottlenecks-tab">
+                    <div class="table-container">
+                        <table id="bottlenecksTable">
+                            <thead>
+                                <tr>
+                                    <th>نقطة الاختناق</th>
+                                    <th>القسم</th>
+                                    <th>التأثير</th>
+                                    <th>الأسباب</th>
+                                    <th>تاريخ التحديث</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="inner-tab-content" id="solutions-tab">
+                    <div class="table-container">
+                        <table id="solutionsTable">
+                            <thead>
+                                <tr>
+                                    <th>الحل المقترح</th>
+                                    <th>المشكلة المستهدفة</th>
+                                    <th>التكلفة المتوقعة</th>
+                                    <th>الجدول الزمني</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مؤشرات الأداء -->
+            <div id="kpis" class="section">
+                <div class="header">
+                    <h2>مؤشرات الأداء</h2>
+                    <button class="btn btn-primary" onclick="openKPIModal()"><i class="fas fa-plus"></i> إضافة مؤشر</button>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>مؤشرات الأداء الرئيسية</h3>
+                        <canvas id="detailedKpiChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>تطور مؤشرات الأداء</h3>
+                        <canvas id="kpiTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="kpiTable">
+                        <thead>
+                            <tr>
+                                <th>المؤشر</th>
+                                <th>القيمة الحالية</th>
+                                <th>الهدف</th>
+                                <th>الاتجاه</th>
+                                <th>القسم المسؤول</th>
+                                <th>آخر تحديث</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملؤها ديناميكياً -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- المقترحات -->
+            <div id="proposals" class="section">
+                <div class="header">
+                    <h2>إدارة المقترحات</h2>
+                    <button class="btn btn-primary" onclick="openProposalModal()"><i class="fas fa-plus"></i> مقترح جديد</button>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="pending">المقترحات المعلقة</div>
+                    <div class="tab" data-tab="evaluated">المقترحات المُقَيّمة</div>
+                    <div class="tab" data-tab="approved">المقترحات المُوافق عليها</div>
+                </div>
+
+                <div class="tab-content active" id="pending-tab">
+                    <div class="table-container">
+                        <table id="pendingProposalsTable">
+                            <thead>
+                                <tr>
+                                    <th>عنوان المقترح</th>
+                                    <th>المقدم</th>
+                                    <th>التاريخ</th>
+                                    <th>التكلفة المتوقعة</th>
+                                    <th>التأثير المتوقع</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="evaluated-tab">
+                    <div class="table-container">
+                        <table id="evaluatedProposalsTable">
+                            <thead>
+                                <tr>
+                                    <th>عنوان المقترح</th>
+                                    <th>المقدم</th>
+                                    <th>التقييم</th>
+                                    <th>التكلفة</th>
+                                    <th>الأثر</th>
+                                    <th>الوقت</th>
+                                    <th>القيمة التشغيلية</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="approved-tab">
+                    <div class="table-container">
+                        <table id="approvedProposalsTable">
+                            <thead>
+                                <tr>
+                                    <th>عنوان المقترح</th>
+                                    <th>المقدم</th>
+                                    <th>تاريخ الموافقة</th>
+                                    <th>الميزانية المخصصة</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التقارير -->
+            <div id="reports" class="section">
+                <div class="header">
+                    <h2>التقارير</h2>
+                    <button class="btn btn-primary" onclick="generateReport()"><i class="fas fa-download"></i> تصدير تقرير</button>
+                </div>
+
+                <div class="inner-tabs">
+                    <div class="inner-tab active" data-tab="performance">تقارير الأداء</div>
+                    <div class="inner-tab" data-tab="financial">التقارير المالية</div>
+                    <div class="inner-tab" data-tab="impact">تقارير الأثر</div>
+                </div>
+
+                <div class="inner-tab-content active" id="performance-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>تقرير أداء المشاريع</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="charts-container">
+                                <div class="chart-card">
+                                    <canvas id="performanceChart1"></canvas>
+                                </div>
+                                <div class="chart-card">
+                                    <canvas id="performanceChart2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner-tab-content" id="financial-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>تقرير العائد على الاستثمار (ROI)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="charts-container">
+                                <div class="chart-card">
+                                    <canvas id="roiChart"></canvas>
+                                </div>
+                                <div class="chart-card">
+                                    <canvas id="budgetChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner-tab-content" id="impact-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>تقرير قياس الأثر</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="charts-container">
+                                <div class="chart-card">
+                                    <canvas id="impactChart1"></canvas>
+                                </div>
+                                <div class="chart-card">
+                                    <canvas id="impactChart2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- النماذج المنبثقة -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="projectModalTitle">إضافة مشروع جديد</h3>
+                <span class="close" onclick="closeModal('projectModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <input type="hidden" id="projectId">
+                    <div class="form-group">
+                        <label for="projectName">اسم المشروع</label>
+                        <input type="text" id="projectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">وصف المشروع</label>
+                        <textarea id="projectDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectManager">مدير المشروع</label>
+                        <select id="projectManager">
+                            <option value="">اختر مدير المشروع</option>
+                            <option value="1">أحمد محمد</option>
+                            <option value="2">فاطمة عبدالله</option>
+                            <option value="3">خالد إبراهيم</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">تاريخ البدء</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">تاريخ الانتهاء</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectBudget">الميزانية المتوقعة</label>
+                        <input type="number" id="projectBudget">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectPriority">الأولوية</label>
+                        <select id="projectPriority">
+                            <option value="high">عالية</option>
+                            <option value="medium">متوسطة</option>
+                            <option value="low">منخفضة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectGoals">الأهداف</label>
+                        <textarea id="projectGoals" placeholder="أذكر الأهداف المرجوة من المشروع"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('projectModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveProjectBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة مرحلة لخارطة الطريق -->
+    <div id="roadmapModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="roadmapModalTitle">إضافة مرحلة جديدة</h3>
+                <span class="close" onclick="closeModal('roadmapModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="roadmapForm">
+                    <input type="hidden" id="roadmapId">
+                    <div class="form-group">
+                        <label for="roadmapTitle">عنوان المرحلة</label>
+                        <input type="text" id="roadmapTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapDescription">وصف المرحلة</label>
+                        <textarea id="roadmapDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapDate">الفترة الزمنية</label>
+                        <input type="text" id="roadmapDate" placeholder="مثال: Q1 2024" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapType">نوع الهدف</label>
+                        <select id="roadmapType">
+                            <option value="short">قصير المدى</option>
+                            <option value="medium">متوسط المدى</option>
+                            <option value="long">طويل المدى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapProgress">نسبة الإنجاز</label>
+                        <input type="range" id="roadmapProgress" min="0" max="100" value="0">
+                        <span id="progressValue">0%</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapStatus">الحالة</label>
+                        <select id="roadmapStatus">
+                            <option value="planning">في مرحلة التخطيط</option>
+                            <option value="progress">قيد التنفيذ</option>
+                            <option value="completed">منتهي</option>
+                            <option value="delayed">متأخر</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadmapBudget">الميزانية المتوقعة</label>
+                        <input type="number" id="roadmapBudget">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('roadmapModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveRoadmapBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة مؤشر أداء -->
+    <div id="kpiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="kpiModalTitle">إضافة مؤشر أداء</h3>
+                <span class="close" onclick="closeModal('kpiModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="kpiForm">
+                    <input type="hidden" id="kpiId">
+                    <div class="form-group">
+                        <label for="kpiName">اسم المؤشر</label>
+                        <input type="text" id="kpiName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiDescription">وصف المؤشر</label>
+                        <textarea id="kpiDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiCurrentValue">القيمة الحالية</label>
+                        <input type="number" id="kpiCurrentValue" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiTarget">الهدف</label>
+                        <input type="number" id="kpiTarget" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiUnit">وحدة القياس</label>
+                        <input type="text" id="kpiUnit" placeholder="مثال: %، يوم، ريال" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiDepartment">القسم المسؤول</label>
+                        <select id="kpiDepartment">
+                            <option value="development">التطوير</option>
+                            <option value="operations">العمليات</option>
+                            <option value="finance">المالية</option>
+                            <option value="marketing">التسويق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpiFrequency">معدل القياس</label>
+                        <select id="kpiFrequency">
+                            <option value="daily">يومي</option>
+                            <option value="weekly">أسبوعي</option>
+                            <option value="monthly">شهري</option>
+                            <option value="quarterly">ربع سنوي</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('kpiModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveKPIBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة مقترح -->
+    <div id="proposalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="proposalModalTitle">إضافة مقترح جديد</h3>
+                <span class="close" onclick="closeModal('proposalModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="proposalForm">
+                    <input type="hidden" id="proposalId">
+                    <div class="form-group">
+                        <label for="proposalTitle">عنوان المقترح</label>
+                        <input type="text" id="proposalTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalDescription">وصف المقترح</label>
+                        <textarea id="proposalDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalSubmitter">مقدم المقترح</label>
+                        <input type="text" id="proposalSubmitter" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalDepartment">القسم</label>
+                        <select id="proposalDepartment">
+                            <option value="development">التطوير</option>
+                            <option value="operations">العمليات</option>
+                            <option value="finance">المالية</option>
+                            <option value="marketing">التسويق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalCost">التكلفة المتوقعة</label>
+                        <input type="number" id="proposalCost">
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalImpact">التأثير المتوقع</label>
+                        <select id="proposalImpact">
+                            <option value="high">مرتفع</option>
+                            <option value="medium">متوسط</option>
+                            <option value="low">منخفض</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalTime">الوقت المتوقع للتنفيذ</label>
+                        <input type="text" id="proposalTime" placeholder="مثال: 3 أشهر">
+                    </div>
+                    <div class="form-group">
+                        <label for="proposalValue">القيمة التشغيلية</label>
+                        <select id="proposalValue">
+                            <option value="high">مرتفعة</option>
+                            <option value="medium">متوسطة</option>
+                            <option value="low">منخفضة</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('proposalModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveProposalBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة عملية -->
+    <div id="processModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="processModalTitle">إضافة عملية جديدة</h3>
+                <span class="close" onclick="closeModal('processModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="processForm">
+                    <input type="hidden" id="processId">
+                    <div class="form-group">
+                        <label for="processName">اسم العملية</label>
+                        <input type="text" id="processName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="processDepartment">القسم</label>
+                        <select id="processDepartment">
+                            <option value="development">التطوير</option>
+                            <option value="operations">العمليات</option>
+                            <option value="finance">المالية</option>
+                            <option value="marketing">التسويق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="processSteps">مراحل العملية</label>
+                        <textarea id="processSteps" placeholder="اذكر مراحل العملية بالترتيب"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="processOwner">المسؤول</label>
+                        <input type="text" id="processOwner" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="processBottlenecks">نقاط الضعف/الاختناق</label>
+                        <textarea id="processBottlenecks"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="processSolutions">الحلول المقترحة</label>
+                        <textarea id="processSolutions"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('processModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveProcessBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        let appData = {
+            projects: [],
+            roadmap: [],
+            kpis: [],
+            proposals: [],
+            processes: []
+        };
+
+        // تحميل البيانات من localStorage إذا كانت موجودة
+        function loadData() {
+            const savedData = localStorage.getItem('devManagementData');
+            if (savedData) {
+                appData = JSON.parse(savedData);
+            } else {
+                // بيانات أولية
+                appData = {
+                    projects: [
+                        { 
+                            id: 1, 
+                            name: "نظام إدارة العملاء", 
+                            manager: "أحمد محمد", 
+                            startDate: "2024-01-15", 
+                            endDate: "2024-05-30", 
+                            status: "progress", 
+                            priority: "high", 
+                            budget: 500000,
+                            description: "تطوير نظام متكامل لإدارة علاقات العملاء وتحسين تجربة المستخدم",
+                            goals: "تحسين كفاءة خدمة العملاء بنسبة 30%، تقليل وقت الاستجابة للمشاكل بنسبة 25%",
+                            completion: 75
+                        },
+                        { 
+                            id: 2, 
+                            name: "تطوير واجهة المستخدم", 
+                            manager: "فاطمة عبدالله", 
+                            startDate: "2024-03-01", 
+                            endDate: "2024-06-15", 
+                            status: "progress", 
+                            priority: "high", 
+                            budget: 300000,
+                            description: "إعادة تصميم واجهات المستخدم لجميع أنظمة الشركة لتحسين تجربة المستخدم",
+                            goals: "تحسين سهولة الاستخدام بنسبة 40%، تقليل وقت إنجاز المهام بنسبة 20%",
+                            completion: 60
+                        },
+                        { 
+                            id: 3, 
+                            name: "منصة التدريب الإلكتروني", 
+                            manager: "خالد إبراهيم", 
+                            startDate: "2024-02-10", 
+                            endDate: "2024-07-20", 
+                            status: "progress", 
+                            priority: "medium", 
+                            budget: 400000,
+                            description: "إنشاء منصة تدريب إلكترونية لموظفي الشركة لتطوير مهاراتهم",
+                            goals: "توفير 50 دورة تدريبية، تدريب 80% من الموظفين خلال السنة الأولى",
+                            completion: 45
+                        }
+                    ],
+                    roadmap: [
+                        { 
+                            id: 1, 
+                            title: "الربع الأول 2024", 
+                            description: "تحسين تجربة المستخدم لمنتجات الشركة الأساسية وتطوير نظام إدارة العملاء الجديد.", 
+                            progress: 100, 
+                            status: "completed", 
+                            date: "Q1 2024",
+                            type: "short",
+                            budget: 500000
+                        },
+                        { 
+                            id: 2, 
+                            title: "الربع الثاني 2024", 
+                            description: "تطوير منصة التدريب الإلكتروني وبدء مشروع التحول الرقمي للعمليات الداخلية.", 
+                            progress: 85, 
+                            status: "progress", 
+                            date: "Q2 2024",
+                            type: "short",
+                            budget: 750000
+                        },
+                        { 
+                            id: 3, 
+                            title: "الربع الثالث 2024", 
+                            description: "إطلاق تطبيق الجوال للعملاء وبدء مشروع الذكاء الاصطناعي للتنبؤ بالمبيعات.", 
+                            progress: 10, 
+                            status: "planning", 
+                            date: "Q3 2024",
+                            type: "medium",
+                            budget: 1200000
+                        },
+                        { 
+                            id: 4, 
+                            title: "الربع الرابع 2024", 
+                            description: "تكامل الأنظمة وتحليل البيانات الضخمة لتحسين عملية اتخاذ القرارات.", 
+                            progress: 0, 
+                            status: "planning", 
+                            date: "Q4 2024",
+                            type: "medium",
+                            budget: 900000
+                        },
+                        { 
+                            id: 5, 
+                            title: "النصف الأول 2025", 
+                            description: "تطوير نظام ذكاء اصطناعي متقدم وتحليل تنبؤي للأسواق والعملاء.", 
+                            progress: 0, 
+                            status: "planning", 
+                            date: "H1 2025",
+                            type: "long",
+                            budget: 2000000
+                        }
+                    ],
+                    kpis: [
+                        { 
+                            id: 1, 
+                            name: "سرعة إنجاز المشاريع التطويرية", 
+                            currentValue: 78, 
+                            target: 85, 
+                            unit: "%", 
+                            department: "development",
+                            frequency: "monthly",
+                            description: "قياس سرعة إنجاز المشاريع مقارنة بالجدول الزمني المخطط"
+                        },
+                        { 
+                            id: 2, 
+                            name: "نسبة تحسين جودة العمليات", 
+                            currentValue: 65, 
+                            target: 80, 
+                            unit: "%", 
+                            department: "operations",
+                            frequency: "quarterly",
+                            description: "قياس نسبة التحسن في جودة العمليات بعد التطوير"
+                        },
+                        { 
+                            id: 3, 
+                            name: "نسبة خفض التكاليف التشغيلية", 
+                            currentValue: 15, 
+                            target: 25, 
+                            unit: "%", 
+                            department: "finance",
+                            frequency: "quarterly",
+                            description: "قياس نسبة التوفير في التكاليف التشغيلية بعد التطوير"
+                        },
+                        { 
+                            id: 4, 
+                            name: "مستوى رضا الإدارات عن الحلول التطويرية", 
+                            currentValue: 4.2, 
+                            target: 4.5, 
+                            unit: "/5", 
+                            department: "development",
+                            frequency: "quarterly",
+                            description: "قياس مستوى رضا الإدارات المختلفة عن الحلول التطويرية المقدمة"
+                        }
+                    ],
+                    proposals: [
+                        { 
+                            id: 1, 
+                            title: "نظام ذكاء اصطناعي للتنبؤ بالمبيعات", 
+                            submitter: "محمد السعيد", 
+                            department: "marketing",
+                            date: "2024-05-15",
+                            cost: 500000,
+                            impact: "high",
+                            time: "6 أشهر",
+                            value: "high",
+                            status: "evaluated",
+                            description: "تطوير نظام ذكاء اصطناعي للتنبؤ بحجم المبيعات وتحليل اتجاهات السوق",
+                            evaluation: { cost: 4, impact: 5, time: 3, value: 5, total: 4.3 }
+                        },
+                        { 
+                            id: 2, 
+                            title: "تطبيق جوال للعملاء", 
+                            submitter: "فاطمة عبدالله", 
+                            department: "development",
+                            date: "2024-05-10",
+                            cost: 300000,
+                            impact: "high",
+                            time: "4 أشهر",
+                            value: "high",
+                            status: "pending",
+                            description: "تطوير تطبيق جوال يسمح للعملاء بالوصول إلى الخدمات بسهولة"
+                        },
+                        { 
+                            id: 3, 
+                            title: "منصة تدريب إلكترونية", 
+                            submitter: "خالد إبراهيم", 
+                            department: "hr",
+                            date: "2024-04-28",
+                            cost: 400000,
+                            impact: "medium",
+                            time: "5 أشهر",
+                            value: "medium",
+                            status: "approved",
+                            description: "إنشاء منصة تدريب إلكترونية شاملة لموظفي الشركة"
+                        }
+                    ],
+                    processes: [
+                        { 
+                            id: 1, 
+                            name: "عملية تطوير البرمجيات", 
+                            department: "development",
+                            steps: "تحليل المتطلبات، التصميم، التطوير، الاختبار، النشر، الصيانة",
+                            owner: "أحمد محمد",
+                            bottlenecks: "تباطؤ في مرحلة الاختبار، عدم وضوح بعض المتطلبات",
+                            solutions: "أتمتة الاختبارات، عقد اجتماعات أسبوعية لتوضيح المتطلبات",
+                            lastUpdate: "2024-05-20"
+                        },
+                        { 
+                            id: 2, 
+                            name: "عملية دعم العملاء", 
+                            department: "operations",
+                            steps: "استقبال الطلب، التصنيف، المعالجة، المتابعة، الإغلاق",
+                            owner: "سارة أحمد",
+                            bottlenecks: "ازدحام في استقبال الطلبات، تأخر في المتابعة",
+                            solutions: "تقسيم الفريق إلى مجموعات متخصصة، استخدام نظام تذكير آلي",
+                            lastUpdate: "2024-05-18"
+                        }
+                    ]
+                };
+                saveData();
+            }
+            
+            updateDashboard();
+            renderProjects();
+            renderRoadmap();
+            renderKPIs();
+            renderProposals();
+            renderProcesses();
+        }
+
+        // حفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('devManagementData', JSON.stringify(appData));
+        }
+
+        // تحديث لوحة التحكم
+        function updateDashboard() {
+            // تحديث الإحصائيات
+            const activeProjects = appData.projects.filter(p => p.status === 'progress').length;
+            document.getElementById('activeProjectsCount').textContent = activeProjects;
+            
+            const totalBudget = appData.projects.reduce((sum, project) => sum + (project.budget || 0), 0);
+            document.getElementById('budgetUsed').textContent = formatCurrency(totalBudget);
+        }
+            //const newProposals = appData.proposals.filter(p => p.status === 'pending').length;
+            //document.getElementById('newProposalsCount').textContent = newProposals;
+            
+            // حساب معدل الإنجاز
+            //const totalCompletion = appData.projects.reduce((sum, project) => sum + (project.completion || 0), 0);
+            c//onst avgCompletion = appData.projects.length > 0 ? Math.round(totalCompletion / appData.projects.length) : 0;
+            //document.getElementById('completionRate').textContent = ${avgCompletion}%;
+            
+            // تحديث قائمة المشاريع العاجلة
+           // const urgentProjects = a}

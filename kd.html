@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام دراسة وتخطيط الخدمات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --info: #4895ef;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --sidebar: #2b2d42;
+            --header: #3a0ca3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            color: white;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-item {
+            margin: 5px 15px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header h1 {
+            color: var(--header);
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .stat-card .number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .stat-card:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .stat-card:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        /* الأقسام */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            color: var(--header);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        /* الجداول */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .table {
+            margin: 0;
+        }
+        
+        .table th {
+            background: var(--light);
+            font-weight: 600;
+            padding: 15px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+        
+        .badge {
+            padding: 8px 12px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* النماذج */
+        .form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .form-card {
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+        
+        /* تفاصيل الخدمة */
+        .service-details {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .service-name {
+            color: var(--header);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .info-card h5 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .info-value {
+            color: #666;
+        }
+        
+        .profit-card {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .profit-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .nav {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            
+            .nav-link {
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-cogs"></i> نظام الخدمات</h3>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>لوحة التحكم</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="services">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>إدارة الخدمات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="analysis">
+                        <i class="fas fa-chart-line"></i>
+                        <span>تحليل الربحية</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="add-service">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>إضافة خدمة جديدة</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- العنوان -->
+            <div class="header">
+                <h1 id="page-title">نظام دراسة وتخطيط الخدمات</h1>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>مدير النظام</span>
+                </div>
+            </div>
+
+            <!-- الإحصائيات -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-concierge-bell"></i>
+                    <div class="number" id="total-services">0</div>
+                    <div>إجمالي الخدمات</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="number" id="total-revenue">0</div>
+                    <div>إجمالي الإيرادات</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <div class="number" id="avg-profit-margin">0%</div>
+                    <div>متوسط هامش الربح</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="number" id="total-demand">0</div>
+                    <div>إجمالي حجم الطلب</div>
+                </div>
+            </div>
+
+            <!-- قسم لوحة التحكم -->
+            <div class="section active" id="dashboard">
+                <div class="section-header">
+                    <h2 class="section-title">نظرة عامة على الخدمات</h2>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>أفضل الخدمات ربحية</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الخدمة</th>
+                                    <th>التكلفة</th>
+                                    <th>سعر البيع</th>
+                                    <th>الربح</th>
+                                    <th>هامش الربح</th>
+                                    <th>حجم الطلب</th>
+                                </tr>
+                            </thead>
+                            <tbody id="top-services-table">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم إدارة الخدمات -->
+            <div class="section" id="services">
+                <div class="section-header">
+                    <h2 class="section-title">إدارة الخدمات</h2>
+                    <button class="btn btn-primary" onclick="showSection('add-service')">
+                        <i class="fas fa-plus"></i> إضافة خدمة جديدة
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>قائمة الخدمات</h3>
+                        <input type="text" class="form-control" placeholder="ابحث عن خدمة..." id="searchServices" style="width: 250px;">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الخدمة</th>
+                                    <th>الوقت المطلوب</th>
+                                    <th>التكلفة الإجمالية</th>
+                                    <th>سعر البيع</th>
+                                    <th>الربح</th>
+                                    <th>حجم الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم تحليل الربحية -->
+            <div class="section" id="analysis">
+                <div class="section-header">
+                    <h2 class="section-title">تحليل ربحية الخدمات</h2>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-card">
+                            <h4>مقارنة ربحية الخدمات</h4>
+                            <canvas id="profitabilityChart" height="300"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-card">
+                            <h4>توزيع حجم الطلب</h4>
+                            <canvas id="demandChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-card mt-4">
+                    <h4>تحليل التكاليف</h4>
+                    <canvas id="costAnalysisChart" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- قسم إضافة خدمة -->
+            <div class="section" id="add-service">
+                <div class="section-header">
+                    <h2 class="section-title">إضافة خدمة جديدة</h2>
+                    <button class="btn btn-primary" onclick="showSection('services')">
+                        <i class="fas fa-arrow-right"></i> العودة للخدمات
+                    </button>
+                </div>
+                
+                <div class="form-container">
+                    <div class="form-card">
+                        <form id="serviceForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="serviceName" class="form-label">اسم الخدمة *</label>
+                                    <input type="text" class="form-control" id="serviceName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="serviceCategory" class="form-label">تصنيف الخدمة *</label>
+                                    <select class="form-select" id="serviceCategory" required>
+                                        <option value="">اختر التصنيف</option>
+                                        <option value="تصميم">تصميم</option>
+                                        <option value="برمجة">برمجة</option>
+                                        <option value="تسويق">تسويق</option>
+                                        <option value="استشارة">استشارة</option>
+                                        <option value="صيانة">صيانة</option>
+                                        <option value="تدريب">تدريب</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="serviceDescription" class="form-label">وصف الخدمة</label>
+                                <textarea class="form-control" id="serviceDescription" rows="3"></textarea>
+                            </div>
+                            
+                            <h5 class="mt-4 mb-3">المواد والموارد المطلوبة</h5>
+                            <div id="materials-container">
+                                <div class="material-item row mb-3">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" placeholder="اسم المادة/الموارد" name="materialName">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" placeholder="الكمية" name="materialQuantity" min="1">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" class="form-control" placeholder="التكلفة للوحدة" name="materialCost" min="0" step="0.01">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-danger w-100" onclick="removeMaterial(this)">حذف</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-4" onclick="addMaterial()">
+                                <i class="fas fa-plus"></i> إضافة مادة/مورد
+                            </button>
+                            
+                            <h5 class="mt-4 mb-3">العمالة المطلوبة</h5>
+                            <div id="labor-container">
+                                <div class="labor-item row mb-3">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" placeholder="نوع العامل/المهنة" name="laborType">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" class="form-control" placeholder="عدد الساعات" name="laborHours" min="0" step="0.5">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" placeholder="التكلفة للساعة" name="laborCost" min="0" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-4" onclick="addLabor()">
+                                <i class="fas fa-plus"></i> إضافة عمالة
+                            </button>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="timeRequired" class="form-label">الوقت المطلوب (بالساعات) *</label>
+                                    <input type="number" class="form-control" id="timeRequired" min="0" step="0.5" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="otherCosts" class="form-label">تكاليف أخرى</label>
+                                    <input type="number" class="form-control" id="otherCosts" min="0" step="0.01">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="sellingPrice" class="form-label">سعر البيع *</label>
+                                    <input type="number" class="form-control" id="sellingPrice" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="demandLevel" class="form-label">مستوى الطلب *</label>
+                                    <select class="form-select" id="demandLevel" required>
+                                        <option value="">اختر مستوى الطلب</option>
+                                        <option value="منخفض">منخفض</option>
+                                        <option value="متوسط">متوسط</option>
+                                        <option value="مرتفع">مرتفع</option>
+                                        <option value="عالٍ جداً">عالٍ جداً</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="demandVolume" class="form-label">حجم الطلب (عدد الطلبات الشهري)</label>
+                                    <input type="number" class="form-control" id="demandVolume" min="0">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="serviceNotes" class="form-label">ملاحظات إضافية</label>
+                                <textarea class="form-control" id="serviceNotes" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-primary">حفظ الخدمة</button>
+                                <button type="button" class="btn btn-secondary" onclick="showSection('services')">إلغاء</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم تفاصيل الخدمة -->
+            <div class="section" id="service-details">
+                <div class="section-header">
+                    <h2 class="section-title">تفاصيل الخدمة</h2>
+                    <button class="btn btn-primary" onclick="showSection('services')">
+                        <i class="fas fa-arrow-right"></i> العودة للخدمات
+                    </button>
+                </div>
+                
+                <div class="service-details">
+                    <div class="service-header">
+                        <h3 class="service-name" id="detail-name">اسم الخدمة</h3>
+                        <span class="badge bg-success" id="detail-category">تصنيف</span>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h5><i class="fas fa-info-circle"></i> المعلومات الأساسية</h5>
+                            <div class="info-item">
+                                <span class="info-label">وصف الخدمة:</span>
+                                <span class="info-value" id="detail-description">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">الوقت المطلوب:</span>
+                                <span class="info-value" id="detail-time">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">مستوى الطلب:</span>
+                                <span class="info-value" id="detail-demand-level">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">حجم الطلب:</span>
+                                <span class="info-value" id="detail-demand-volume">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h5><i class="fas fa-money-bill-wave"></i> المعلومات المالية</h5>
+                            <div class="info-item">
+                                <span class="info-label">سعر البيع:</span>
+                                <span class="info-value" id="detail-selling-price">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">التكلفة الإجمالية:</span>
+                                <span class="info-value" id="detail-total-cost">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">الربح:</span>
+                                <span class="info-value" id="detail-profit">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">هامش الربح:</span>
+                                <span class="info-value" id="detail-profit-margin">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h5><i class="fas fa-boxes"></i> المواد والموارد</h5>
+                            <div id="detail-materials">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h5><i class="fas fa-users"></i> العمالة المطلوبة</h5>
+                            <div id="detail-labor">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profit-card">
+                        <h4>الربحية الشهرية المتوقعة</h4>
+                        <div class="number" id="detail-monthly-profit">0 ر.س</div>
+                        <p>بناءً على حجم الطلب الحالي</p>
+                    </div>
+                    
+                    <div class="info-card mt-4">
+                        <h5><i class="fas fa-sticky-note"></i> ملاحظات إضافية</h5>
+                        <p id="detail-notes">لا توجد ملاحظات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let services = JSON.parse(localStorage.getItem('services')) || [];
+        let currentServiceId = null;
+        let charts = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (services.length === 0) {
+                initializeSampleData();
+            }
+            
+            updateStatistics();
+            renderServicesTable();
+            renderTopServicesTable();
+            initializeCharts();
+            
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                    
+                    document.querySelectorAll('.nav-link').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            document.getElementById('serviceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveService();
+            });
+            
+            document.getElementById('searchServices').addEventListener('input', function() {
+                filterTable('services-table', this.value);
+            });
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            
+            updatePageTitle(sectionId);
+            
+            if (sectionId === 'analysis') {
+                updateCharts();
+            }
+        }
+
+        function updatePageTitle(sectionId) {
+            const titles = {
+                'dashboard': 'نظام دراسة وتخطيط الخدمات',
+                'services': 'إدارة الخدمات',
+                'analysis': 'تحليل ربحية الخدمات',
+                'add-service': 'إضافة خدمة جديدة',
+                'service-details': 'تفاصيل الخدمة'
+            };
+            
+            document.getElementById('page-title').textContent = titles[sectionId] || 'نظام الخدمات';
+        }
+
+        function initializeSampleData() {
+            services = [
+                {
+                    id: 1,
+                    name: 'تصميم موقع ويب متكامل',
+                    category: 'تصميم',
+                    description: 'تصميم موقع ويب متكامل مع واجهة مستخدم تفاعلية',
+                    timeRequired: 40,
+                    materials: [
+                        { name: 'برامج التصميم', quantity: 1, cost: 200 },
+                        { name: 'صور ورسومات', quantity: 1, cost: 150 }
+                    ],
+                    labor: [
+                        { type: 'مصمم ويب', hours: 30, cost: 50 },
+                        { type: 'مطور واجهات', hours: 10, cost: 60 }
+                    ],
+                    otherCosts: 100,
+                    sellingPrice: 3000,
+                    demandLevel: 'مرتفع',
+                    demandVolume: 8,
+                    notes: 'خدمة مطلوبة بشكل كبير في السوق',
+                    totalCost: 0,
+                    profit: 0,
+                    profitMargin: 0
+                },
+                {
+                    id: 2,
+                    name: 'تطبيق جوال للأندرويد',
+                    category: 'برمجة',
+                    description: 'تطبيق جوال كامل للأندرويد مع قاعدة بيانات',
+                    timeRequired: 120,
+                    materials: [
+                        { name: 'تراخيص التطوير', quantity: 1, cost: 300 },
+                        { name: 'خدمات سحابية', quantity: 1, cost: 200 }
+                    ],
+                    labor: [
+                        { type: 'مطور أندرويد', hours: 100, cost: 70 },
+                        { type: 'مصمم واجهات', hours: 20, cost: 50 }
+                    ],
+                    otherCosts: 150,
+                    sellingPrice: 8000,
+                    demandLevel: 'عالٍ جداً',
+                    demandVolume: 5,
+                    notes: 'التطبيقات المميزة تحقق أرباحاً عالية',
+                    totalCost: 0,
+                    profit: 0,
+                    profitMargin: 0
+                },
+                {
+                    id: 3,
+                    name: 'حملة تسويق إلكتروني',
+                    category: 'تسويق',
+                    description: 'حملة تسويقية شاملة على وسائل التواصل الاجتماعي',
+                    timeRequired: 30,
+                    materials: [
+                        { name: 'إعلانات مدفوعة', quantity: 1, cost: 1000 },
+                        { name: 'أدوات تحليل', quantity: 1, cost: 100 }
+                    ],
+                    labor: [
+                        { type: 'مسوق إلكتروني', hours: 25, cost: 40 },
+                        { type: 'كاتب محتوى', hours: 5, cost: 30 }
+                    ],
+                    otherCosts: 50,
+                    sellingPrice: 2500,
+                    demandLevel: 'متوسط',
+                    demandVolume: 12,
+                    notes: 'مناسبة للشركات الصغيرة والمتوسطة',
+                    totalCost: 0,
+                    profit: 0,
+                    profitMargin: 0
+                }
+            ];
+            
+            services.forEach(service => {
+                calculateServiceCosts(service);
+            });
+            
+            localStorage.setItem('services', JSON.stringify(services));
+        }
+
+        function calculateServiceCosts(service) {
+            let materialsCost = 0;
+            if (service.materials) {
+                service.materials.forEach(material => {
+                    materialsCost += material.quantity * material.cost;
+                });
+            }
+            
+            let laborCost = 0;
+            if (service.labor) {
+                service.labor.forEach(labor => {
+                    laborCost += labor.hours * labor.cost;
+                });
+            }
+            
+            service.totalCost = materialsCost + laborCost + (service.otherCosts || 0);
+            
+            service.profit = service.sellingPrice - service.totalCost;
+            service.profitMargin = service.sellingPrice > 0 ? (service.profit / service.sellingPrice) * 100 : 0;
+            
+            return service;
+        }
+
+        function updateStatistics() {
+            const totalServices = services.length;
+            const totalRevenue = services.reduce((sum, service) => sum + service.sellingPrice * (service.demandVolume || 0), 0);
+            const avgProfitMargin = services.length > 0 ? 
+                services.reduce((sum, service) => sum + service.profitMargin, 0) / services.length : 0;
+            const totalDemand = services.reduce((sum, service) => sum + (service.demandVolume || 0), 0);
+            
+            document.getElementById('total-services').textContent = totalServices;
+            document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' ر.س';
+            document.getElementById('avg-profit-margin').textContent = avgProfitMargin.toFixed(1) + '%';
+            document.getElementById('total-demand').textContent = totalDemand;
+        }
+
+        function renderServicesTable() {
+            const tableBody = document.getElementById('services-table');
+            
+            tableBody.innerHTML = '';
+            
+            if (services.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center py-4">لا توجد خدمات مسجلة</td></tr>';
+                return;
+            }
+            
+            services.forEach(service => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${service.id}</td>
+                    <td>${service.name}</td>
+                    <td>${service.timeRequired} ساعة</td>
+                    <td>${service.totalCost.toLocaleString()} ر.س</td>
+                    <td>${service.sellingPrice.toLocaleString()} ر.س</td>
+                    <td>${service.profit.toLocaleString()} ر.س</td>
+                    <td>${service.demandVolume || 0}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-info" onclick="viewServiceDetails(${service.id})">
+                                <i class="fas fa-eye"></i> عرض
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editService(${service.id})">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteService(${service.id})">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function renderTopServicesTable() {
+            const tableBody = document.getElementById('top-services-table');
+            
+            tableBody.innerHTML = '';
+            
+            if (services.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4">لا توجد خدمات مسجلة</td></tr>';
+                return;
+            }
+            
+            const sortedServices = [...services].sort((a, b) => b.profit - a.profit);
+            
+            sortedServices.slice(0, 5).forEach(service => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${service.id}</td>
+                    <td>${service.name}</td>
+                    <td>${service.totalCost.toLocaleString()} ر.س</td>
+                    <td>${service.sellingPrice.toLocaleString()} ر.س</td>
+                    <td>${service.profit.toLocaleString()} ر.س</td>
+                    <td>${service.profitMargin.toFixed(1)}%</td>
+                    <td>${service.demandVolume || 0}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addMaterial() {
+            const container = document.getElementById('materials-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'material-item row mb-3';
+            newItem.innerHTML = `
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="اسم المادة/الموارد" name="materialName">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" placeholder="الكمية" name="materialQuantity" min="1">
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control" placeholder="التكلفة للوحدة" name="materialCost" min="0" step="0.01">
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-danger w-100" onclick="removeMaterial(this)">حذف</button>
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+
+        function addLabor() {
+            const container = document.getElementById('labor-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'labor-item row mb-3';
+            newItem.innerHTML = `
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="نوع العامل/المهنة" name="laborType">
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control" placeholder="عدد الساعات" name="laborHours" min="0" step="0.5">
+                </div>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" placeholder="التكلفة للساعة" name="laborCost" min="0" step="0.01">
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+
+        function removeMaterial(button) {
+            button.closest('.material-item').remove();
+        }
+
+        function saveService() {
+            const name = document.getElementById('serviceName').value;
+            const category = document.getElementById('serviceCategory').value;
+            const description = document.getElementById('serviceDescription').value;
+            const timeRequired = parseFloat(document.getElementById('timeRequired').value);
+            const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
+            const demandLevel = document.getElementById('demandLevel').value;
+            const demandVolume = parseInt(document.getElementById('demandVolume').value) || 0;
+            const notes = document.getElementById('serviceNotes').value;
+            
+            // جمع بيانات المواد
+            const materials = [];
+            document.querySelectorAll('.material-item').forEach(item => {
+                const name = item.querySelector('[name="materialName"]').value;
+                const quantity = parseInt(item.querySelector('[name="materialQuantity"]').value) || 0;
+                const cost = parseFloat(item.querySelector('[name="materialCost"]').value) || 0;
+                
+                if (name && quantity > 0 && cost > 0) {
+                    materials.push({ name, quantity, cost });
+                }
+            });
+            
+            // جمع بيانات العمالة
+            const labor = [];
+            document.querySelectorAll('.labor-item').forEach(item => {
+                const type = item.querySelector('[name="laborType"]').value;
+                const hours = parseFloat(item.querySelector('[name="laborHours"]').value) || 0;
+                const cost = parseFloat(item.querySelector('[name="laborCost"]').value) || 0;
+                
+                if (type && hours > 0 && cost > 0) {
+                    labor.push({ type, hours, cost });
+                }
+            });
+            
+            const newService = {
+                id: services.length > 0 ? Math.max(...services.map(s => s.id)) + 1 : 1,
+                name,
+                category,
+                description,
+                timeRequired,
+                materials,
+                labor,
+                otherCosts,
+                sellingPrice,
+                demandLevel,
+                demandVolume,
+                notes,
+                totalCost: 0,
+                profit: 0,
+                profitMargin: 0
+            };
+            
+            // حساب التكاليف والأرباح
+            calculateServiceCosts(newService);
+            
+            services.push(newService);
+            localStorage.setItem('services', JSON.stringify(services));
+            
+            updateStatistics();
+            renderServicesTable();
+            renderTopServicesTable();
+            
+            alert('تم حفظ الخدمة بنجاح');
+            document.getElementById('serviceForm').reset();
+            showSection('services');
+        }
+
+        // عرض تفاصيل الخدمة
+        function viewServiceDetails(id) {
+            const service = services.find(s => s.id === id);
+            if (!service) return;
+            
+            currentServiceId = id;
+            
+            // تعبئة البيانات في صفحة التفاصيل
+            document.getElementById('detail-name').textContent = service.name;
+            document.getElementById('detail-category').textContent = service.category;
+            document.getElementById('detail-description').textContent = service.description || '--';
+            document.getElementById('detail-time').textContent = service.timeRequired + ' ساعة';
+            document.getElementById('detail-demand-level').textContent = service.demandLevel;
+            document.getElementById('detail-demand-volume').textContent = service.demandVolume || 0;
+            document.getElementById('detail-selling-price').textContent = service.sellingPrice.toLocaleString() + ' ر.س';
+            document.getElementById('detail-total-cost').textContent = service.totalCost.toLocaleString() + ' ر.س';
+            document.getElementById('detail-profit').textContent = service.profit.toLocaleString() + ' ر.س';
+            document.getElementById('detail-profit-margin').textContent = service.profitMargin.toFixed(1) + '%';
+            document.getElementById('detail-notes').textContent = service.notes || 'لا توجد ملاحظات';
+            
+            // حساب الربحية الشهرية
+            const monthlyProfit = service.profit * (service.demandVolume || 0);
+            document.getElementById('detail-monthly-profit').textContent = monthlyProfit.toLocaleString() + ' ر.س';
+            
+            // عرض المواد والموارد
+            const materialsContainer = document.getElementById('detail-materials');
+            materialsContainer.innerHTML = '';
+            
+            if (service.materials && service.materials.length > 0) {
+                service.materials.forEach(material => {
+                    const materialItem = document.createElement('div');
+                    materialItem.className = 'info-item';
+                    materialItem.innerHTML = `
+                        <span class="info-label">${material.name}</span>
+                        <span class="info-value">${material.quantity} × ${material.cost.toLocaleString()} ر.س = ${(material.quantity * material.cost).toLocaleString()} ر.س</span>
+                    `;
+                    materialsContainer.appendChild(materialItem);
+                });
+            } else {
+                materialsContainer.innerHTML = '<p>لا توجد مواد مسجلة</p>';
+            }
+            
+            // عرض العمالة المطلوبة
+            const laborContainer = document.getElementById('detail-labor');
+            laborContainer.innerHTML = '';
+            
+            if (service.labor && service.labor.length > 0) {
+                service.labor.forEach(labor => {
+                    const laborItem = document.createElement('div');
+                    laborItem.className = 'info-item';
+                    laborItem.innerHTML = `
+                        <span class="info-label">${labor.type}</span>
+                        <span class="info-value">${labor.hours} ساعة × ${labor.cost.toLocaleString()} ر.س = ${(labor.hours * labor.cost).toLocaleString()} ر.س</span>
+                    `;
+                    laborContainer.appendChild(laborItem);
+                });
+            } else {
+                laborContainer.innerHTML = '<p>لا توجد عمالة مسجلة</p>';
+            }
+            
+            // إظهار صفحة التفاصيل
+            showSection('service-details');
+        }
+
+        // تعديل الخدمة
+        function editService(id) {
+            const service = services.find(s => s.id === id);
+            if (!service) return;
+            
+            // ملء النموذج ببيانات الخدمة
+            document.getElementById('serviceName').value = service.name;
+            document.getElementById('serviceCategory').value = service.category;
+            document.getElementById('serviceDescription').value = service.description || '';
+            document.getElementById('timeRequired').value = service.timeRequired;
+            document.getElementById('otherCosts').value = service.otherCosts || 0;
+            document.getElementById('sellingPrice').value = service.sellingPrice;
+            document.getElementById('demandLevel').value = service.demandLevel;
+            document.getElementById('demandVolume').value = service.demandVolume || 0;
+            document.getElementById('serviceNotes').value = service.notes || '';
+            
+            // ملء المواد
+            const materialsContainer = document.getElementById('materials-container');
+            materialsContainer.innerHTML = '';
+            
+            if (service.materials && service.materials.length > 0) {
+                service.materials.forEach(material => {
+                    addMaterial();
+                    const lastItem = materialsContainer.lastElementChild;
+                    lastItem.querySelector('[name="materialName"]').value = material.name;
+                    lastItem.querySelector('[name="materialQuantity"]').value = material.quantity;
+                    lastItem.querySelector('[name="materialCost"]').value = material.cost;
+                });
+            } else {
+                addMaterial();
+            }
+            
+            // ملء العمالة
+            const laborContainer = document.getElementById('labor-container');
+            laborContainer.innerHTML = '';
+            
+            if (service.labor && service.labor.length > 0) {
+                service.labor.forEach(labor => {
+                    addLabor();
+                    const lastItem = laborContainer.lastElementChild;
+                    lastItem.querySelector('[name="laborType"]').value = labor.type;
+                    lastItem.querySelector('[name="laborHours"]').value = labor.hours;
+                    lastItem.querySelector('[name="laborCost"]').value = labor.cost;
+                });
+            } else {
+                addLabor();
+            }
+            
+           showSection('add-service');
+            
+            document.getElementById('serviceForm').onsubmit = function(e) {
+                e.preventDefault();
+                updateService(id);
+            };
+        }
+
+        function updateService(id) {
+            const service = services.find(s => s.id === id);
+            if (!service) return;
+            
+            service.name = document.getElementById('serviceName').value;
+            service.category = document.getElementById('serviceCategory').value;
+            service.description = document.getElementById('serviceDescription').value;
+            service.timeRequired = parseFloat(document.getElementById('timeRequired').value);
+            service.otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+            service.sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
+            service.demandLevel = document.getElementById('demandLevel').value;
+            service.demandVolume = parseInt(document.getElementById('demandVolume').value) || 0;
+            service.notes = document.getElementById('serviceNotes').value;
+            
+            service.materials = [];
+            document.querySelectorAll('.material-item').forEach(item => {
+                const name = item.querySelector('[name="materialName"]').value;
+                const quantity = parseInt(item.querySelector('[name="materialQuantity"]').value) || 0;
+                const cost = parseFloat(item.querySelector('[name="materialCost"]').value) || 0;
+                
+                if (name && quantity > 0 && cost > 0) {
+                    service.materials.push({ name, quantity, cost });
+                }
+            });
+            
+            service.labor = [];
+            document.querySelectorAll('.labor-item').forEach(item => {
+                const type = item.querySelector('[name="laborType"]').value;
+                const hours = parseFloat(item.querySelector('[name="laborHours"]').value) || 0;
+                const cost = parseFloat(item.querySelector('[name="laborCost"]').value) || 0;
+                
+                if (type && hours > 0 && cost > 0) {
+                    service.labor.push({ type, hours, cost });
+                }
+            });
+            
+            calculateServiceCosts(service);
+            
+            localStorage.setItem('services', JSON.stringify(services));
+            
+            updateStatistics();
+            renderServicesTable();
+            renderTopServicesTable();
+            
+            alert('تم تحديث بيانات الخدمة بنجاح');
+            showSection('services');
+            
+            document.getElementById('serviceForm').onsubmit = function(e) {
+                e.preventDefault();
+                saveService();
+            };
+        }
+
+        function deleteService(id) {
+            if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return;
+            
+            services = services.filter(s => s.id !== id);
+            localStorage.setItem('services', JSON.stringify(services));
+            
+            updateStatistics();
+            renderServicesTable();
+            renderTopServicesTable();
+            
+            alert('تم حذف الخدمة بنجاح');
+        }
+
+        function filterTable(tableId, query) {
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+                    if (cellText.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                rows[i].style.display = found ? '' : 'none';
+            }
+        }
+
+        function initializeCharts() {
+            const profitabilityCtx = document.getElementById('profitabilityChart').getContext('2d');
+            charts.profitabilityChart = new Chart(profitabilityCtx, {
+                type: 'bar',
+                data: {
+                    labels: services.map(s => s.name),
+                    datasets: [{
+                        label: 'الربح (ر.س)',
+                        data: services.map(s => s.profit),
+                        backgroundColor: 'rgba(67, 97, 238, 0.7)',
+                        borderColor: 'rgba(67, 97, 238, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'مقارنة ربحية الخدمات'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const demandCtx = document.getElementById('demandChart').getContext('2d');
+            charts.demandChart = new Chart(demandCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: services.map(s => s.name),
+                    datasets: [{
+                        data: services.map(s => s.demandVolume || 0),
+                        backgroundColor: [
+                            '#4361ee',
+                            '#f72585',
+                            '#4cc9f0',
+                            '#43e97b',
+                            '#ff9a00'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'توزيع حجم الطلب على الخدمات'
+                        }
+                    }
+                }
+            });
+            
+            const costCtx = document.getElementById('costAnalysisChart').getContext('2d');
+            charts.costAnalysisChart = new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: services.map(s => s.name),
+                    datasets: [
+                        {
+                            label: 'تكلفة المواد',
+                            data: services.map(s => {
+                                let cost = 0;
+                                if (s.materials) {
+                                    s.materials.forEach(m => cost += m.quantity * m.cost);
+                                }
+                                return cost;
+                            }),
+                            backgroundColor: 'rgba(67, 97, 238, 0.7)'
+                        },
+                        {
+                            label: 'تكلفة العمالة',
+                            data: services.map(s => {
+                                let cost = 0;
+                                if (s.labor) {
+                                    s.labor.forEach(l => cost += l.hours * l.cost);
+                                }
+                                return cost;
+                            }),
+                            backgroundColor: 'rgba(247, 37, 133, 0.7)'
+                        },
+                        {
+                            label: 'تكاليف أخرى',
+                            data: services.map(s => s.otherCosts || 0),
+                            backgroundColor: 'rgba(76, 201, 240, 0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'تحليل التكاليف للخدمات'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts() {
+            charts.profitabilityChart.data.labels = services.map(s => s.name);
+            charts.profitabilityChart.data.datasets[0].data = services.map(s => s.profit);
+            charts.profitabilityChart.update();
+                        charts.demandChart.data.labels = services.map(s => s.name);
+            charts.demandChart.data.datasets[0].data = services.map(s => s.demandVolume || 0);
+            charts.demandChart.update();
+            
+            charts.costAnalysisChart.data.labels = services.map(s => s.name);
+            charts.costAnalysisChart.data.datasets[0].data = services.map(s => {
+                let cost = 0;
+                if (s.materials) {
+                    s.materials.forEach(m => cost += m.quantity * m.cost);
+                }
+                return cost;
+            });
+            charts.costAnalysisChart.data.datasets[1].data = services.map(s => {
+                let cost = 0;
+                if (s.labor) {
+                    s.labor.forEach(l => cost += l.hours * l.cost);
+                }
+                return cost;
+            });
+            charts.costAnalysisChart.data.datasets[2].data = services.map(s => s.otherCosts || 0);
+            charts.costAnalysisChart.update();
+        }
+    </script>
+</body>

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام DMBTM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #0d47a1;
+            --accent-color: #00c853;
+            --neon-blue: #00f0ff;
+            --neon-purple: #b300ff;
+            --text-color: #fff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, #0a0e1a 0%, #000000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            color: var(--text-color);
+        }
+        
+        /* الشبكة ثلاثية الأبعاد المحسنة */
+        #network3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* خلفية البيانات الرقمية */
+        .data-stream {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        
+        .stream {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--neon-blue), transparent);
+            animation: dataStream 8s linear infinite;
+            opacity: 0;
+        }
+        
+        @keyframes dataStream {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        /* النجوم */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* صفحة الترحيب */
+        .welcome-container {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 600px;
+            padding: 50px 40px;
+            text-align: center;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .system-logo {
+            font-size: 70px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: white;
+            text-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue),
+                0 0 30px var(--neon-blue),
+                0 0 40px var(--neon-purple);
+            padding: 15px 25px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .letters-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .letter {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .letter:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+            border-color: var(--neon-blue);
+        }
+        
+        .meaning-display {
+            min-height: 80px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .url-input-section {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .url-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.4s;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .url-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .url-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--neon-purple));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3);
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+        }
+        
+        .action-btn:hover::before {
+            left: 100%;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        /* الحاوية الرئيسية - أكثر وضوحاً */
+        .login-container {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 10;
+            display: none;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* رأس الصفحة - أكثر وضوحاً */
+        .login-header {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.5), rgba(179, 0, 255, 0.4));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .login-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(179, 0, 255, 0.15) 0%, transparent 50%);
+        }
+        
+        .logo-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        /* تحسينات الشعار لجعله أكثر وضوحاً */
+        .logo {
+            font-size: 58px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue),
+                0 0 30px var(--neon-blue),
+                0 0 40px var(--neon-purple);
+            padding: 10px 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            
+        }
+
+        
+        
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 
+                0 0 15px var(--neon-blue),
+                0 0 30px var(--neon-blue),
+                0 0 45px var(--neon-blue),
+                0 0 60px var(--neon-purple);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+        
+        .logo-letter {
+            display: inline-block;
+            transition: all 0.3s;
+            position: relative;
+            text-shadow: inherit;
+        }
+        
+        .logo-letter:hover {
+            transform: translateY(-8px) scale(1.2);
+            color: var(--neon-blue);
+        }
+        
+        .letter-tooltip {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            z-index: 100;
+            font-weight: 600;
+        }
+        
+        .logo-letter:hover .letter-tooltip {
+            opacity: 1;
+        }
+        
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .login-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        /* نموذج الدخول */
+        .login-form {
+            padding: 40px 35px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: white;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.4s;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 48px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--neon-blue);
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            font-size: 15px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .remember-me input {
+            margin-left: 10px;
+            accent-color: var(--neon-blue);
+            width: 18px;
+            height: 18px;
+        }
+        
+        .forgot-password {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .forgot-password::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 0;
+            height: 1px;
+            background: var(--neon-blue);
+            transition: width 0.3s;
+        }
+        
+        .forgot-password:hover {
+            color: var(--neon-blue);
+        }
+        
+        .forgot-password:hover::after {
+            width: 100%;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary-color), var(--neon-purple));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-login::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3);
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+        }
+        
+        .btn-login:hover::before {
+            left: 100%;
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .login-footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* صفحة النجاح */
+        .success-container {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 600px;
+            padding: 50px 40px;
+            text-align: center;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 200, 83, 0.7);
+        }
+        
+        .success-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .success-message {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .welcome-container, .login-container, .success-container {
+                max-width: 95%;
+                margin: 20px;
+            }
+            
+            .login-header, .login-form {
+                padding: 30px 20px;
+            }
+            
+            .logo, .system-logo {
+                font-size: 46px;
+                letter-spacing: 6px;
+                padding: 8px 16px;
+            }
+            
+            .letters-container {
+                gap: 10px;
+            }
+            
+            .letter {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشبكة ثلاثية الأبعاد -->
+    <canvas id="network3d"></canvas>
+    
+    <!-- تيار البيانات -->
+    <div class="data-stream" id="dataStream"></div>
+    
+    <!-- النجوم -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- صفحة الترحيب -->
+    <div id="welcomePage" class="welcome-container">
+        <div class="system-logo">DMBTM</div>
+        
+        <div class="url-input-section">
+            <h3 style="margin-bottom: 20px;">أدخل رابط الشركة للدخول للنظام</h3>
+            <input type="text" class="url-input" id="companyUrl" placeholder="أدخل 1111 للدخول">
+            <button class="action-btn" onclick="checkCompanyUrl()">دخول الشركة</button>
+            <p id="urlError" class="error-message">رابط الشركة غير صحيح! الرجاء إدخال 1111</p>
+        </div>
+    </div>
+    
+    <!-- الحاوية الرئيسية -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-header">
+            <div class="logo-container">
+                <div class="logo" id="logo">
+                    <span class="logo-letter" data-tooltip="التقنيات الرقمية">
+                        D
+                        <span class="letter-tooltip">التقنيات الرقمية</span>
+                    </span>
+                    <span class="logo-letter" data-tooltip="الابتكار المتقدم">
+                        M
+                        <span class="letter-tooltip">الابتكار المتقدم</span>
+                    </span>
+                    <span class="logo-letter" data-tooltip="الحلول الذكية">
+                        B
+                        <span class="letter-tooltip">الحلول الذكية</span>
+                    </span>
+                    <span class="logo-letter" data-tooltip="إدارة البيانات">
+                        T
+                        <span class="letter-tooltip">إدارة البيانات</span>
+                    </span>
+                    <span class="logo-letter" data-tooltip="المستقبل التكنولوجي">
+                        M
+                        <span class="letter-tooltip">المستقبل التكنولوجي</span>
+                    </span>
+                </div>
+            </div>
+            <h1>تسجيل الدخول</h1>
+            <p>نظام إدارة شركة DMBTM للتكنولوجيا المتقدمة</p>
+        </div>
+        
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> اسم المستخدم</label>
+                <input type="text" id="username" class="form-control" placeholder="أدخل اسم المستخدم" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+                <button type="button" class="password-toggle" id="togglePassword">
+                    <i class="far fa-eye"></i>
+                </button>
+            </div>
+            
+            <div class="options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">تذكر بيانات الدخول</label>
+                </div>
+                <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+            </div>
+            
+            <button type="submit" class="btn-login">
+                <span class="btn-text">تسجيل الدخول</span>
+            </button>
+            
+            <p id="loginError" class="error-message">اسم المستخدم أو كلمة المرور غير صحيحة! استخدم 1212 و 0011</p>
+            
+            <div class="login-footer">
+                <p>جميع الحقوق محفوظة &copy; 2023 DMBTM Technologies</p>
+            </div>
+        </form>
+    </div>
+    
+    <!-- صفحة النجاح -->
+    <div id="successPage" class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 class="success-title">تم تسجيل الدخول بنجاح!</h2>
+        <p class="success-message">مرحباً بك في نظام DMBTM للتكنولوجيا المتقدمة</p>
+        <button class="action-btn" onclick="goToDashboard()">الانتقال إلى لوحة التحكم</button>
+    </div>
+
+    <script>
+        // بيانات النظام للتسجيل
+        const systemData = {
+            company: {
+                name: "DMBTM",
+                url: "1111"
+            },
+            users: [
+                { 
+                    id: 1,
+                    username: "1212", 
+                    password: "0011", 
+                    name: "الإدارة", 
+                    role: "مدير النظام",
+                    department: "all"
+                }
+            ]
+        };
+
+        // إنشاء الشبكة ثلاثية الأبعاد المحسنة
+        function init3dNetwork() {
+            const canvas = document.getElementById('network3d');
+            const ctx = canvas.getContext('2d');
+            
+            // ضبط حجم Canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // إعداد المتغيرات
+            const nodes = [];
+            const nodeCount = 80;
+            
+            // إنشاء العقد العشوائية
+            for (let i = 0; i < nodeCount; i++) {
+                nodes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    z: Math.random() * 300 - 150,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    radius: Math.random() * 2 + 1,
+                    color: Math.random() > 0.7 ? 'rgba(0, 240, 255, 0.9)' : 
+                           Math.random() > 0.4 ? 'rgba(179, 0, 255, 0.9)' : 'rgba(255, 255, 255, 0.6)'
+                });
+            }
+            
+            // دورة الرسم
+            function animate() {
+                ctx.fillStyle = 'rgba(10, 14, 26, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // تحديث ورسـم العقد
+                nodes.forEach(node => {
+                    // تحديث المواقع
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    node.z += (Math.random() - 0.5) * 0.1;
+                    
+                    // الارتداد من الحواف
+                    if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                    if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+                    
+                    // التأكد من بقاء العقد داخل الشاشة
+                    node.x = Math.max(0, Math.min(canvas.width, node.x));
+                    node.y = Math.max(0, Math.min(canvas.height, node.y));
+                    node.z = Math.max(-150, Math.min(150, node.z));
+                    
+                    // رسم العقدة مع تأثير العمق
+                    const scale = 0.5 + (150 + node.z) / 300;
+                    const alpha = 0.3 + (150 + node.z) / 300 * 0.7;
+                    
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius * scale, 0, Math.PI * 2);
+                    ctx.fillStyle = node.color.replace('0.9', alpha);
+                    ctx.fill();
+                    
+                    // تأثير التوهج للعقد الملونة
+                    if (node.color.includes('240') || node.color.includes('179')) {
+                        ctx.beginPath();
+                        ctx.arc(node.x, node.y, (node.radius + 3) * scale, 0, Math.PI * 2);
+                        ctx.fillStyle = node.color.replace('0.9', alpha * 0.3);
+                        ctx.fill();
+                    }
+                });
+                
+                // رسم الاتصالات بين العقد القريبة
+                nodes.forEach((nodeA, i) => {
+                    nodes.forEach((nodeB, j) => {
+                        if (i >= j) return;
+                        
+                        const dx = nodeA.x - nodeB.x;
+                        const dy = nodeA.y - nodeB.y;
+                        const dz = nodeA.z - nodeB.z;
+                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                        
+                        if (distance < 120) {
+                            const opacity = (1 - distance / 120) * 0.4;
+                            ctx.beginPath();
+                            ctx.moveTo(nodeA.x, nodeA.y);
+                            ctx.lineTo(nodeB.x, nodeB.y);
+                            
+                            // تحديد لون الخط بناءً على ألوان العقد
+                            let lineColor;
+                            if (nodeA.color.includes('240') || nodeB.color.includes('240')) {
+                                lineColor = `rgba(0, 240, 255, ${opacity})`;
+                            } else if (nodeA.color.includes('179') || nodeB.color.includes('179')) {
+                                lineColor = `rgba(179, 0, 255, ${opacity})`;
+                            } else {
+                                lineColor = `rgba(255, 255, 255, ${opacity * 0.5})`;
+                            }
+                            
+                            ctx.strokeStyle = lineColor;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    });
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        // إنشاء تيار البيانات
+        function createDataStream() {
+            const container = document.getElementById('dataStream');
+            const streamCount = 15;
+            
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.classList.add('stream');
+                
+                const left = Math.random() * 100;
+                const animationDelay = Math.random() * 8;
+                const animationDuration = 5 + Math.random() * 6;
+                const height = 50 + Math.random() * 100;
+                
+                stream.style.left = `${left}%`;
+                stream.style.animationDelay = `${animationDelay}s`;
+                stream.style.animationDuration = `${animationDuration}s`;
+                stream.style.height = `${height}px`;
+                
+                // لون عشوائي للتيار
+                const colors = [
+                    'var(--neon-blue)',
+                    'var(--neon-purple)',
+                    'var(--accent-color)',
+                    '#ffffff'
+                ];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                stream.style.background = `linear-gradient(to bottom, transparent, ${color}, transparent)`;
+                
+                container.appendChild(stream);
+            }
+        }
+        
+        // إنشاء النجوم
+        function createStars() {
+            const container = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                const size = Math.random() * 2;
+                const animationDelay = Math.random() * 5;
+                const animationDuration = 3 + Math.random() * 4;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${animationDelay}s`;
+                star.style.animationDuration = `${animationDuration}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // التحقق من رابط الشركة
+        function checkCompanyUrl() {
+            const urlInput = document.getElementById('companyUrl');
+            const urlError = document.getElementById('urlError');
+            
+            if (urlInput.value === systemData.company.url) {
+                // الانتقال إلى صفحة تسجيل الدخول
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'block';
+            } else {
+                urlError.style.display = 'block';
+                urlInput.style.borderColor = '#ff6b6b';
+                urlInput.style.boxShadow = '0 0 10px rgba(255, 107, 107, 0.5)';
+                
+                setTimeout(() => {
+                    urlError.style.display = 'none';
+                    urlInput.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    urlInput.style.boxShadow = 'none';
+                }, 3000);
+            }
+        }
+        
+        // تفاعل شعار DMBTM
+        function setupLogoInteractions() {
+            const logo = document.getElementById('logo');
+            let clickCount = 0;
+            let clickTimer;
+            
+            logo.addEventListener('click', function() {
+                clickCount++;
+                
+                if (clickCount === 1) {
+                    clickTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 500);
+                } else if (clickCount === 2) {
+                    clearTimeout(clickTimer);
+                    clickCount = 0;
+                    
+                    // تأثير النقر المزدوج
+                    logo.style.transform = 'scale(1.1)';
+                    
+                    setTimeout(() => {
+                        logo.style.transform = 'scale(1)';
+                        
+                        // الانتقال إلى الصفحة الأخرى
+                        alert('مرحباً بك في نظام DMBTM! سيتم توجيهك إلى الصفحة الرئيسية.');
+                    }, 300);
+                }
+            });
+        }
+        
+        // تبديل رؤية كلمة المرور
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // معالجة تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+            
+            const user = systemData.users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                errorElement.style.display = 'none';
+                
+                // تأثير أثناء التحميل
+                const loginBtn = document.querySelector('.btn-login');
+                const btnText = loginBtn.querySelector('.btn-text');
+                
+                btnText.textContent = 'جاري التحقق...';
+                loginBtn.style.background = 'linear-gradient(135deg, #FF9800, #F57C00)';
+                
+                // محاكاة عملية تسجيل الدخول
+                setTimeout(() => {
+                    btnText.textContent = 'تم التسجيل بنجاح!';
+                    loginBtn.style.background = 'linear-gradient(135deg, var(--accent-color), #009624)';
+                    
+                    // الانتقال إلى صفحة النجاح بعد تسجيل الدخول الناجح
+                    setTimeout(() => {
+                        document.getElementById('loginContainer').style.display = 'none';
+                        document.getElementById('successPage').style.display = 'flex';
+                    }, 1000);
+                }, 1500);
+            } else {
+                errorElement.style.display = 'block';
+            }
+        });
+        
+        // الانتقال إلى لوحة التحكم
+        function goToDashboard() {
+        //    alert('سيتم توجيهك إلى لوحة التحكم الآن!');
+             window.location.href = "ad2.html";
+        }
+        
+        // تهيئة الأنيميشن عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            init3dNetwork();
+            createDataStream();
+            createStars();
+            setupLogoInteractions();
+        });
+    </script>
+</body>
+</html>
